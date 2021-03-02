@@ -66,3 +66,10 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 ### `npm run build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+
+# Firebase install
+
+npmp install -g firebase-tools
+Go to Fire.google.com -> créer projet -> faire suivant puis prendre la config et la copier dans un fichier firbase.js
+
+- Supprimer le dossier Counter et garder le fichier CounterSlice
