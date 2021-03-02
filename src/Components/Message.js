@@ -1,11 +1,10 @@
 import React from "react";
-
 import styled from "styled-components";
 
 export default function Message({ message, user, timestamp, userImage }) {
   return (
     <MessageContainer>
-      <img src={userImage} alt="" />
+      <img src={userImage} alt="User" />
       <MessageInfo>
         <h4>
           {user} <span>{new Date(timestamp?.toDate()).toUTCString()}</span>

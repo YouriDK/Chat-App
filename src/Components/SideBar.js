@@ -14,10 +14,14 @@ import FileCopyIcon from "@material-ui/icons/FileCopy";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import AddIcon from "@material-ui/icons/Add";
-
 import { useCollection } from "react-firebase-hooks/firestore";
 import { auth, db } from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
+/*
+  TODO : Implémenter les fonctionnalités des Sidebar options
+  TODO : Mettre un autre nom dans le h3
+  TODO : Implémenter le bouton crayon
+*/
 
 export default function SideBar() {
   const [channels, loading, error] = useCollection(db.collection("rooms"));
@@ -27,12 +31,11 @@ export default function SideBar() {
     <SidebarContainer>
       <SidebarHeader>
         <SidebarInfo>
-          <h2> PULL UP</h2>
-          <h3>
+          <h2>
             {" "}
             <FiberManualRecordIcon />
-            PULL UP BDK
-          </h3>
+            {"    "} {user.displayName}
+          </h2>
         </SidebarInfo>
         <CreateIcon />
       </SidebarHeader>
@@ -99,7 +102,7 @@ const SidebarInfo = styled.div`
     align-items: center;
   }
 
-  > h3 > .MuiSvgIcon-root {
+  > h2 > .MuiSvgIcon-root {
     font-size: 14px;
     margin-top: 1px;
     margin-right: 2px;

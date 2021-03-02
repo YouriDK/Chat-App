@@ -1,6 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import "./App.css";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Header from "./Components/Header";
 import SideBar from "./Components/SideBar";
 import styled from "styled-components";
@@ -9,7 +8,16 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import Login from "./Components/Login";
 import { auth } from "./firebase";
 import Spinner from "react-spinkit";
-
+/*
+TODO Implémenter le Side Bar
+TODO Arranger la liste des message ( scroll , affichage des msg derriere le barre input)
+TODO Implémenter Show less
+TODO Implémenter la suppression de channels
+TODO Implémenter La barre Search
+TODO Mettre un bouton send sur la droite de la barre input
+TODO Mettre une forme Responsive
+TODO Arranger le display name dans le sideBar
+*/
 function App() {
   const [user, loading] = useAuthState(auth);
   if (loading) {
@@ -26,7 +34,7 @@ function App() {
     );
   }
   return (
-    <div className="App">
+    <div>
       <Router>
         {!user ? (
           <Login />

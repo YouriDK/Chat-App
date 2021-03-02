@@ -7,6 +7,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 
 export default function ChatInput({ channelName, channelId, chatRef }) {
   const [input, setInput] = useState(null);
+  // *  Récupération des données de l'user lors du login
   const [user] = useAuthState(auth);
 
   const sendMessage = (e) => {
@@ -21,7 +22,7 @@ export default function ChatInput({ channelName, channelId, chatRef }) {
       user: user.displayName,
       userImage: user.photoURL,
     });
-    chatRef?.current.scrollIntoView({ behavior: "smooth" });
+    chatRef?.current.scrollIntoView({ behavior: "smooth" }); // * Permet de Scroll down directement au changement
     setInput("");
   };
 

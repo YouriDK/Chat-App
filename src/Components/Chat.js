@@ -1,12 +1,12 @@
 import React, { useRef, useEffect } from "react";
-import styled from "styled-components";
-import StarBorderOutlinedIcon from "@material-ui/icons/StarBorderOutlined";
-import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
-import ChatInput from "./ChatInput";
-import { db } from "../firebase";
 import { useSelector } from "react-redux";
 import { selectRoomId } from "../features/appSlice";
 import { useCollection, useDocument } from "react-firebase-hooks/firestore";
+import styled from "styled-components";
+import ChatInput from "./ChatInput";
+import { db } from "../firebase";
+import StarBorderOutlinedIcon from "@material-ui/icons/StarBorderOutlined";
+import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
 import Message from "./Message";
 
 export default function Chat() {
@@ -15,13 +15,14 @@ export default function Chat() {
   const [roomDetails] = useDocument(
     roomId && db.collection("rooms").doc(roomId)
   );
+  // * Query pour fouiller dans la base de données ( Collections )
   const [roomMessage, loading] = useCollection(
     roomId &&
       db
-        .collection("rooms")
-        .doc(roomId)
-        .collection("messages")
-        .orderBy("timestamp", "asc")
+        .collection("rooms") // * Collections Rooms
+        .doc(roomId) // * Sélection de la room en fonction de son ID
+        .collection("messages") // * Récupérer tous les messages
+        .orderBy("timestamp", "asc") // * Et les affichent par ordre Chronologique
   );
 
   useEffect(() => {
@@ -44,7 +45,8 @@ export default function Chat() {
             </HeraderLeft>
             <HeaderRight>
               <p>
-                <InfoOutlinedIcon /> Details
+                <InfoOutlinedIcon /> Details{" "}
+                {/*//TODO Voir la fonctionnalités que l'on peut ajouter à ces détails    */}
               </p>
             </HeaderRight>
           </Header>
@@ -52,7 +54,7 @@ export default function Chat() {
             {roomMessage?.docs.map((doc) => {
               const { message, timestamp, user, userImage } = doc.data();
               return (
-                <Message
+                <Message // *Composant pour afficher chaque message
                   key={doc.id}
                   message={message}
                   timestamp={timestamp}
@@ -64,7 +66,7 @@ export default function Chat() {
             <ChatBottom ref={chatRef} />
           </ChatMessages>
 
-          <ChatInput
+          <ChatInput // * Barre pour écrire un message
             chatRef={chatRef}
             channelName={roomDetails?.data().name}
             channelId={roomId}

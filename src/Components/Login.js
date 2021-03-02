@@ -1,7 +1,7 @@
-import { Button } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 import { auth, provider } from "../firebase";
+import { Button } from "@material-ui/core";
 
 export default function Login() {
   const SignIn = (e) => {
@@ -18,7 +18,7 @@ export default function Login() {
           alt=""
         />{" "}
         <h1>Sign in to the clone</h1>
-        <p> Porfolio Project incoming</p>
+        <p> Second project portfolio</p>
         <Button onClick={SignIn}>Sign in with Google</Button>
       </LoginInnerContainer>
     </LoginContainer>
