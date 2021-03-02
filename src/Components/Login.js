@@ -1,16 +1,25 @@
+import { Button } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
+import { auth, provider } from "../firebase";
 
 export default function Login() {
+  const SignIn = (e) => {
+    e.preventDefault();
+    auth.signInWithPopup(provider).catch((error) => {
+      alert(error.message);
+    });
+  };
   return (
     <LoginContainer>
       <LoginInnerContainer>
         <img
-          src="https://www.undernews.fr/wp-content/uploads/2020/03/slack-logo.jpg"
+          src="https://www.esecad.com/wp-content/uploads/sites/38/2016/11/slack-chat.png"
           alt=""
         />{" "}
         <h1>Sign in to the clone</h1>
         <p> Porfolio Project incoming</p>
+        <Button onClick={SignIn}>Sign in with Google</Button>
       </LoginInnerContainer>
     </LoginContainer>
   );
@@ -34,5 +43,12 @@ const LoginInnerContainer = styled.div`
     height: 100px;
     margin-bottom: 40px;
     object-fit: contain;
+  }
+
+  > button {
+    margin-top: 50px;
+    text-transform: inherit !important;
+    background-color: #0a8d48;
+    color: white;
   }
 `;

@@ -25,7 +25,10 @@ export default function Chat() {
   );
 
   useEffect(() => {
-    chatRef?.current.scrollIntoView({ behavior: "smooth" });
+    console.log(chatRef.current);
+    if (chatRef.current !== null) {
+      chatRef?.current.scrollIntoView({ behavior: "smooth" });
+    }
   }, [roomId, loading]);
 
   return (
