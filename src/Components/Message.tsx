@@ -1,10 +1,14 @@
-import React from "react";
-import styled from "styled-components";
-
-export default function Message({ message, user, timestamp, userImage }) {
+import React, { FC } from 'react';
+import styled from 'styled-components';
+const Message: FC<any> = ({
+  message,
+  user,
+  timestamp,
+  userImage,
+}): JSX.Element => {
   return (
     <MessageContainer>
-      <img src={userImage} alt="User" />
+      <img src={userImage} alt='User' />
       <MessageInfo>
         <h4>
           {user} <span>{new Date(timestamp?.toDate()).toUTCString()}</span>
@@ -13,7 +17,7 @@ export default function Message({ message, user, timestamp, userImage }) {
       </MessageInfo>
     </MessageContainer>
   );
-}
+};
 
 const MessageContainer = styled.div`
   display: flex;
@@ -36,3 +40,5 @@ const MessageInfo = styled.div`
     font-size: 10px;
   }
 `;
+
+export default Message;

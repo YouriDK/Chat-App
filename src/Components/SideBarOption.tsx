@@ -1,16 +1,21 @@
-import React from "react";
-import { useDispatch } from "react-redux";
-import styled from "styled-components";
-import { enterRoom } from "../features/appSlice";
-import { db } from "../firebase";
+import React, { FC } from 'react';
+import { useDispatch } from 'react-redux';
+import styled from 'styled-components';
+import { enterRoom } from '../features/appSlice';
+import { db } from '../firebase';
 
-export default function SideBarOption({ Icon, title, addChannelOption, id }) {
+const SideBarOption: FC<any> = ({
+  Icon,
+  title,
+  addChannelOption,
+  id,
+}): JSX.Element => {
   const dispatch = useDispatch();
   const addChannel = () => {
-    const channelName = prompt("Please enter the channel name :");
+    const channelName = prompt('Please enter the channel name :');
 
     if (channelName) {
-      db.collection("rooms").add({
+      db.collection('rooms').add({
         name: channelName,
       });
     }
@@ -29,18 +34,18 @@ export default function SideBarOption({ Icon, title, addChannelOption, id }) {
     <SideBarOptionConatiner
       onClick={addChannelOption ? addChannel : selectChannel}
     >
-      {Icon && <Icon fontSize="small" style={{ padding: 10 }} />}
+      {Icon && <Icon fontSize='small' style={{ padding: 10 }} />}
       {Icon ? (
         <h3> {title} </h3>
       ) : (
         <SideBarOptionChannel>
-          {" "}
+          {' '}
           <span>#</span> {title}
         </SideBarOptionChannel>
       )}
     </SideBarOptionConatiner>
   );
-}
+};
 
 const SideBarOptionConatiner = styled.div`
   display: flex;
@@ -67,3 +72,5 @@ const SideBarOptionChannel = styled.h3`
   padding: 10px 0;
   font-weight: 300;
 `;
+
+export default SideBarOption;

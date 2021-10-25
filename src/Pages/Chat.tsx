@@ -1,34 +1,33 @@
-import React, { useRef, useEffect } from "react";
-import { useSelector } from "react-redux";
-import { selectRoomId } from "../features/appSlice";
-import { useCollection, useDocument } from "react-firebase-hooks/firestore";
-import styled from "styled-components";
-import ChatInput from "./ChatInput";
-import { db } from "../firebase";
-import StarBorderOutlinedIcon from "@material-ui/icons/StarBorderOutlined";
-import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
-import Message from "./Message";
+import React, { FC, useRef, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { selectRoomId } from '../features/appSlice';
+import { useCollection, useDocument } from 'react-firebase-hooks/firestore';
+import styled from 'styled-components';
+import ChatInput from '../Components/ChatInput';
+import { db } from '../firebase';
+import StarBorderOutlinedIcon from '@material-ui/icons/StarBorderOutlined';
+import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
+import Message from '../Components/Message';
 
-export default function Chat() {
+const Chat: FC<any> = (): JSX.Element => {
   const chatRef = useRef(null);
   const roomId = useSelector(selectRoomId);
   const [roomDetails] = useDocument(
-    roomId && db.collection("rooms").doc(roomId)
+    roomId && db.collection('rooms').doc(roomId)
   );
-  // * Query pour fouiller dans la base de données ( Collections )
   const [roomMessage, loading] = useCollection(
     roomId &&
       db
-        .collection("rooms") // * Collections Rooms
+        .collection('rooms') // * Collections Rooms
         .doc(roomId) // * Sélection de la room en fonction de son ID
-        .collection("messages") // * Récupérer tous les messages
-        .orderBy("timestamp", "asc") // * Et les affichent par ordre Chronologique
+        .collection('messages') // * Récupérer tous les messages
+        .orderBy('timestamp', 'asc') // * Et les affichent par ordre Chronologique
   );
 
   useEffect(() => {
-    console.log(chatRef.current);
     if (chatRef.current !== null) {
-      chatRef?.current.scrollIntoView({ behavior: "smooth" });
+      const temp: any = chatRef.current;
+      temp.scrollIntoView({ behavior: 'smooth' });
     }
   }, [roomId, loading]);
 
@@ -39,13 +38,13 @@ export default function Chat() {
           <Header>
             <HeraderLeft>
               <h4>
-                <strong>#{roomDetails?.data().name}</strong>
+                <strong>#{roomDetails?.data()?.name}</strong>
               </h4>
               <StarBorderOutlinedIcon />
             </HeraderLeft>
             <HeaderRight>
               <p>
-                <InfoOutlinedIcon /> Details{" "}
+                <InfoOutlinedIcon /> Details{' '}
                 {/*//TODO Voir la fonctionnalités que l'on peut ajouter à ces détails    */}
               </p>
             </HeaderRight>
@@ -68,14 +67,15 @@ export default function Chat() {
 
           <ChatInput // * Barre pour écrire un message
             chatRef={chatRef}
-            channelName={roomDetails?.data().name}
+            channelName={roomDetails?.data()?.name}
             channelId={roomId}
           />
         </>
       )}
     </ChatContainer>
   );
-}
+};
+export default Chat;
 
 const Header = styled.div`
   display: flex;

@@ -9,3 +9,5 @@ Go to Fire.google.com -> créer projet -> faire suivant puis prendre la config e
 
 Basé sur des collections comme MongoDB
 Collections -> [docs] -> Collections ( message) -> [docs] chaque msg
+
+- Passer à Typescript

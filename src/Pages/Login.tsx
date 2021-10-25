@@ -1,10 +1,10 @@
-import React from "react";
-import styled from "styled-components";
-import { auth, provider } from "../firebase";
-import { Button } from "@material-ui/core";
+import React, { FC, useState } from 'react';
+import styled from 'styled-components';
+import { auth, provider } from '../firebase';
+import { Button } from '@material-ui/core';
 
-export default function Login() {
-  const SignIn = (e) => {
+const Login: FC<any> = (): JSX.Element => {
+  const SignIn = (e: any) => {
     e.preventDefault();
     auth.signInWithPopup(provider).catch((error) => {
       alert(error.message);
@@ -14,16 +14,16 @@ export default function Login() {
     <LoginContainer>
       <LoginInnerContainer>
         <img
-          src="https://www.esecad.com/wp-content/uploads/sites/38/2016/11/slack-chat.png"
-          alt=""
-        />{" "}
+          src='https://www.esecad.com/wp-content/uploads/sites/38/2016/11/slack-chat.png'
+          alt=''
+        />{' '}
         <h1>Sign in to the clone</h1>
         <p> Second project portfolio</p>
         <Button onClick={SignIn}>Sign in with Google</Button>
       </LoginInnerContainer>
     </LoginContainer>
   );
-}
+};
 
 const LoginContainer = styled.div`
   display: grid;
@@ -52,3 +52,5 @@ const LoginInnerContainer = styled.div`
     color: white;
   }
 `;
+
+export default Login;
