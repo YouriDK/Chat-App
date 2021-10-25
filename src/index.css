@@ -1,3 +1,20 @@
+:root {
+  --background: #fefee3;
+  --primary: #ff9f1c;
+  --ligth-bg: #ffc9b9;
+  --secondary: #2c6e49;
+  --intermediate: #4c956c;
+
+  --orange: #ffbf69;
+  --grey: #a19f9f;
+  --black: #000000;
+  --clear-black: #252525;
+  --white: #ffffff;
+  --success: #15ff00;
+  --red: #ff0054;
+  --slack-color: #49274b;
+}
+
 * {
   margin: 0;
 }
@@ -41,4 +58,22 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.alert {
+  padding: 1rem;
+  border: 0.1rem solid transparent;
+  border-radius: 0.5rem;
+}
+.alert-info {
+  color: #2020a0;
+  background-color: #e0e0ff;
+}
+.alert-danger {
+  color: #a02020;
+  background-color: #ffe0e0;
+}
+.alert-success {
+  color: #188633;
+  background-color: #ddffe6;
 }

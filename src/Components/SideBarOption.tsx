@@ -1,47 +1,30 @@
-import React, { FC } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { FC, MouseEventHandler } from 'react';
 import styled from 'styled-components';
-import { enterRoom } from '../features/appSlice';
-import { db } from '../firebase';
+import { GrStatusUnknown } from 'react-icons/gr';
 
-const SideBarOption: FC<any> = ({
+interface SideBarOptionProps {
+  Icon: any;
+  title: string;
+  onClick: MouseEventHandler<HTMLDivElement>;
+  id?: string;
+}
+const SideBarOption: FC<SideBarOptionProps> = ({
   Icon,
   title,
-  addChannelOption,
-  id,
+  onClick,
 }): JSX.Element => {
-  const dispatch = useDispatch();
-  const addChannel = () => {
-    const channelName = prompt('Please enter the channel name :');
-
-    if (channelName) {
-      db.collection('rooms').add({
-        name: channelName,
-      });
-    }
-  };
-  const selectChannel = () => {
-    if (id) {
-      dispatch(
-        enterRoom({
-          roomId: id,
-        })
-      );
-    }
-  };
-
   return (
-    <SideBarOptionConatiner
-      onClick={addChannelOption ? addChannel : selectChannel}
-    >
-      {Icon && <Icon fontSize='small' style={{ padding: 10 }} />}
+    <SideBarOptionConatiner onClick={onClick}>
       {Icon ? (
-        <h3> {title} </h3>
+        <>
+          <Icon size={35} style={{ padding: 10 }} />
+          <h3> {title} </h3>
+        </>
       ) : (
-        <SideBarOptionChannel>
-          {' '}
-          <span>#</span> {title}
-        </SideBarOptionChannel>
+        <>
+          <GrStatusUnknown size={35} style={{ padding: 10 }} />
+          <h3> {title} </h3>
+        </>
       )}
     </SideBarOptionConatiner>
   );

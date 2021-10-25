@@ -1,61 +1,135 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import styled from 'styled-components';
-import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
-import CreateIcon from '@material-ui/icons/Create';
+import { WiMoonAltNew } from 'react-icons/wi';
+import { MdSave } from 'react-icons/md';
+import { CgBrowser } from 'react-icons/cg';
+import { BsFillPeopleFill } from 'react-icons/bs';
+import { GiConversation } from 'react-icons/gi';
+import {
+  AiFillPlusCircle,
+  AiFillMinusCircle,
+  AiOutlineInbox,
+  AiFillAppstore,
+  AiFillFileText,
+} from 'react-icons/ai';
+import { BiCommentDetail, BiMessageAdd } from 'react-icons/bi';
+import { enterRoom } from '../features/appSlice';
 import SideBarOption from '../Components/SideBarOption';
-
-import InsertCommentIcon from '@material-ui/icons/InsertComment';
-import InboxIcon from '@material-ui/icons/Inbox';
-import DraftsIcon from '@material-ui/icons/Drafts';
-import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
-import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
-import AppsIcon from '@material-ui/icons/Apps';
-import FileCopyIcon from '@material-ui/icons/FileCopy';
-import ExpandLessIcon from '@material-ui/icons/ExpandLess';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import AddIcon from '@material-ui/icons/Add';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { auth, db } from '../firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
-
-/*
-  TODO : Implémenter les fonctionnalités des Sidebar options
-  TODO : Mettre un autre nom dans le h3
-  TODO : Implémenter le bouton crayon
-*/
+import { useDispatch } from 'react-redux';
+import { sleep } from '../Utils/sleep';
+import MesssageBox from '../Components/MesssageBox';
 
 const SideBar: FC<any> = (): JSX.Element => {
   const [channels, loading, error] = useCollection(db.collection('rooms'));
   const [user] = useAuthState(auth);
+  const dispatch = useDispatch();
+  const [alert, setAlert] = useState(false);
+  const [channel, setChannel] = useState(false);
+  const [options, setOptions] = useState(false);
 
+  const handleFeatureComing = async () => {
+    setAlert(true);
+    await sleep(2000);
+    setAlert(false);
+  };
+  const addChannel = () => {
+    console.log('ADD CHANNEL');
+    const channelName = prompt('Please enter the channel name :');
+    if (channelName) {
+      db.collection('rooms').add({
+        name: channelName,
+      });
+    }
+  };
+  const selectChannel = (id: string) => {
+    if (id) {
+      dispatch(
+        enterRoom({
+          roomId: id,
+        })
+      );
+    }
+  };
   return (
     <SidebarContainer>
       <SidebarHeader>
         <SidebarInfo>
-          <h2>
-            {' '}
-            <FiberManualRecordIcon />
-            {'    '} {user?.displayName}
-          </h2>
+          <WiMoonAltNew color='green' size={20} />
+          <h3>{user?.displayName}</h3>
         </SidebarInfo>
-        <CreateIcon />
       </SidebarHeader>
-      <SideBarOption Icon={InsertCommentIcon} title='Threads' />
-      <SideBarOption Icon={InboxIcon} title='Mentions & reactions' />
-      <SideBarOption Icon={DraftsIcon} title='Saved Items' />
-      <SideBarOption Icon={BookmarkBorderIcon} title='Channel browser' />
-      <SideBarOption Icon={PeopleAltIcon} title='People & user groups' />
-      <SideBarOption Icon={AppsIcon} title='Apps' />
-      <SideBarOption Icon={FileCopyIcon} title='File browser' />
-      <SideBarOption Icon={ExpandLessIcon} title='Show Less' />
+      <SideBarOption
+        Icon={options ? AiFillPlusCircle : AiFillMinusCircle}
+        title='Options'
+        onClick={() => setOptions(!options)}
+      />
+      {options && (
+        <>
+          <SideBarOption
+            Icon={BiCommentDetail}
+            title='Threads'
+            onClick={handleFeatureComing}
+          />
+          <SideBarOption
+            Icon={AiOutlineInbox}
+            title='Mentions & reactions'
+            onClick={handleFeatureComing}
+          />
+          <SideBarOption
+            Icon={MdSave}
+            title='Saved Items'
+            onClick={handleFeatureComing}
+          />
+          <SideBarOption
+            Icon={CgBrowser}
+            title='Channel browser'
+            onClick={handleFeatureComing}
+          />
+          <SideBarOption
+            Icon={BsFillPeopleFill}
+            title='People & user groups'
+            onClick={handleFeatureComing}
+          />
+          <SideBarOption
+            Icon={AiFillAppstore}
+            title='Apps'
+            onClick={handleFeatureComing}
+          />
+          <SideBarOption
+            Icon={AiFillFileText}
+            title='File browser'
+            onClick={handleFeatureComing}
+          />
+          {alert && <MesssageBox variant='info' text={'Feature incoming'} />}
+        </>
+      )}
       <hr />
-      <SideBarOption Icon={ExpandMoreIcon} title='Channels' />
-      <hr />
-      <SideBarOption Icon={AddIcon} addChannelOption title='Add channel' />
+      <SideBarOption
+        Icon={channel ? AiFillPlusCircle : AiFillMinusCircle}
+        title='Channels'
+        onClick={() => setChannel(!channel)}
+      />
+      {channel && (
+        <>
+          <SideBarOption
+            Icon={BiMessageAdd}
+            title='Add channel'
+            onClick={addChannel}
+          />
 
-      {channels?.docs.map((doc) => (
-        <SideBarOption key={doc.id} id={doc.id} title={doc.data().name} />
-      ))}
+          {channels?.docs.map((doc) => (
+            <SideBarOption
+              Icon={GiConversation}
+              key={doc.id}
+              title={doc.data().name}
+              onClick={() => selectChannel(doc.id)}
+            />
+          ))}
+        </>
+      )}
     </SidebarContainer>
   );
 };
@@ -64,25 +138,25 @@ const SidebarContainer = styled.div`
   background-color: var(--slack-color);
   color: white;
   flex: 0.3;
-  border-top: 1px solid #49274b;
+  border-top: 1px solid var(--slack-color);
   max-width: 260px;
   margin-top: 60px;
 
   > hr {
     margin-top: 10px;
     margin-bottom: 10px;
-    border: 1px solid #49274b;
+    border: 1px solid var(--slack-color);
   }
 `;
 
 const SidebarHeader = styled.div`
   display: flex;
-  border-bottom: 1px solid #49274b;
+  border-bottom: 1px solid var(--slack-color);
   padding: 13px;
 
   > .MuiSvgIcon-root {
     padding: 8px;
-    color: #49274b;
+    color: var(--slack-color);
     font-size: 18px;
     background-color: white;
     border-radius: 999px;
@@ -91,6 +165,7 @@ const SidebarHeader = styled.div`
 
 const SidebarInfo = styled.div`
   flex: 1;
+  display: flex;
   > h2 {
     font-size: 15px;
     font-weight: 900;
@@ -99,15 +174,9 @@ const SidebarInfo = styled.div`
   > h3 {
     display: flex;
     font-size: 13px;
-    font-weight: 400;
+    font-weight: 600;
     align-items: center;
-  }
-
-  > h2 > .MuiSvgIcon-root {
-    font-size: 14px;
-    margin-top: 1px;
-    margin-right: 2px;
-    color: green;
+    margin-left: 15px;
   }
 `;
 
