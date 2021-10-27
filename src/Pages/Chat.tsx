@@ -1,5 +1,5 @@
-import React, { FC, useRef, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import React, { FC, useRef, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectRoomId } from '../features/appSlice';
 import { useCollection, useDocument } from 'react-firebase-hooks/firestore';
 import styled from 'styled-components';
@@ -8,70 +8,91 @@ import { db } from '../firebase';
 import StarBorderOutlinedIcon from '@material-ui/icons/StarBorderOutlined';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import Message from '../Components/Message';
+import LoadingBox from '../Components/LoadingBox';
+import MesssageBox from '../Components/MesssageBox';
+import { getChatDetails } from '../Middleware/actions/chatActions';
 
-const Chat: FC<any> = (): JSX.Element => {
+const Chat: FC<any> = (props: any): JSX.Element => {
+  // const chatRef = useRef(null);
+  // const roomId = useSelector(selectRoomId);
+  // const [details] = useDocument(
+  //   roomId && db.collection('rooms').doc(roomId)
+  // );
+  // const [message, loading] = useCollection(
+  //   roomId &&
+  //     db
+  //       .collection('rooms') // * Collections Rooms
+  //       .doc(roomId) // * Sélection de la room en fonction de son ID
+  //       .collection('messages') // * Récupérer tous les messages
+  //       .orderBy('timestamp', 'asc') // * Et les affichent par ordre Chronologique
+  // );
+
+  // useEffect(() => {
+  //   if (chatRef.current !== null) {
+  //     const temp: any = chatRef.current;
+  //     temp.scrollIntoView({ behavior: 'smooth' });
+  //   }
+  // }, [roomId, loading]);
+  // {/*//TODO Voir la fonctionnalités que l'on peut ajouter à ces détails    */}
+  const chatId = props.match.params.id;
   const chatRef = useRef(null);
-  const roomId = useSelector(selectRoomId);
-  const [roomDetails] = useDocument(
-    roomId && db.collection('rooms').doc(roomId)
-  );
-  const [roomMessage, loading] = useCollection(
-    roomId &&
+
+  const [convoName, setConvoName] = useState('');
+  const [details] = useDocument(chatId && db.collection('rooms').doc(chatId));
+  const [messages, loading] = useCollection(
+    chatId &&
       db
         .collection('rooms') // * Collections Rooms
-        .doc(roomId) // * Sélection de la room en fonction de son ID
+        .doc(chatId) // * Sélection de la room en fonction de son ID
         .collection('messages') // * Récupérer tous les messages
         .orderBy('timestamp', 'asc') // * Et les affichent par ordre Chronologique
   );
-
   useEffect(() => {
-    if (chatRef.current !== null) {
-      const temp: any = chatRef.current;
-      temp.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, [roomId, loading]);
+    setConvoName(details?.data()?.name);
+  }, [details]);
 
-  return (
+  return loading ? (
+    <LoadingBox />
+  ) : !details && !messages ? (
+    <MesssageBox variant='danger' text='Intels missing !' />
+  ) : (
     <ChatContainer>
-      {roomDetails && roomMessage && (
-        <>
-          <Header>
-            <HeraderLeft>
-              <h4>
-                <strong>#{roomDetails?.data()?.name}</strong>
-              </h4>
-              <StarBorderOutlinedIcon />
-            </HeraderLeft>
-            <HeaderRight>
-              <p>
-                <InfoOutlinedIcon /> Details{' '}
-                {/*//TODO Voir la fonctionnalités que l'on peut ajouter à ces détails    */}
-              </p>
-            </HeaderRight>
-          </Header>
-          <ChatMessages>
-            {roomMessage?.docs.map((doc) => {
-              const { message, timestamp, user, userImage } = doc.data();
-              return (
-                <Message // *Composant pour afficher chaque message
-                  key={doc.id}
-                  message={message}
-                  timestamp={timestamp}
-                  user={user}
-                  userImage={userImage}
-                />
-              );
-            })}
-            <ChatBottom ref={chatRef} />
-          </ChatMessages>
+      <>
+        <Header>
+          <HeraderLeft>
+            <h4>
+              <strong>#{convoName}</strong>
+            </h4>
+            <StarBorderOutlinedIcon />
+          </HeraderLeft>
+          <HeaderRight>
+            <p>
+              <InfoOutlinedIcon /> Details{' '}
+            </p>
+          </HeaderRight>
+        </Header>
+        <ChatMessages>
+          {messages?.docs.map((doc: any) => {
+            const { message, timestamp, user, userImage } = doc.data();
+            return (
+              <Message // *Composant pour afficher chaque message
+                key={doc.id}
+                message={message}
+                timestamp={timestamp}
+                user={user}
+                userImage={userImage}
+              />
+            );
+          })}
+          <ChatBottom ref={chatRef} />
+        </ChatMessages>
 
-          <ChatInput // * Barre pour écrire un message
-            chatRef={chatRef}
-            channelName={roomDetails?.data()?.name}
-            channelId={roomId}
-          />
-        </>
-      )}
+        <ChatInput // * Barre pour écrire un message
+          chatRef={chatRef}
+          channelName={details?.data()?.name}
+          channelId={chatId}
+        />
+      </>
     </ChatContainer>
   );
 };

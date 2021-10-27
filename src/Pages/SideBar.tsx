@@ -1,5 +1,6 @@
 import React, { FC, useState } from 'react';
 import styled from 'styled-components';
+import { useHistory } from 'react-router-dom';
 import { WiMoonAltNew } from 'react-icons/wi';
 import { MdSave } from 'react-icons/md';
 import { CgBrowser } from 'react-icons/cg';
@@ -22,14 +23,14 @@ import { useDispatch } from 'react-redux';
 import { sleep } from '../Utils/sleep';
 import MesssageBox from '../Components/MesssageBox';
 
-const SideBar: FC<any> = (): JSX.Element => {
+const SideBar: FC<any> = (props: any): JSX.Element => {
   const [channels, loading, error] = useCollection(db.collection('rooms'));
   const [user] = useAuthState(auth);
   const dispatch = useDispatch();
   const [alert, setAlert] = useState(false);
-  const [channel, setChannel] = useState(false);
-  const [options, setOptions] = useState(false);
-
+  const [channel, setChannel] = useState(true);
+  const [options, setOptions] = useState(true);
+  const history = useHistory();
   const handleFeatureComing = async () => {
     setAlert(true);
     await sleep(2000);
@@ -45,6 +46,7 @@ const SideBar: FC<any> = (): JSX.Element => {
     }
   };
   const selectChannel = (id: string) => {
+    history.push(`/chat/${id}`);
     if (id) {
       dispatch(
         enterRoom({
@@ -62,7 +64,7 @@ const SideBar: FC<any> = (): JSX.Element => {
         </SidebarInfo>
       </SidebarHeader>
       <SideBarOption
-        Icon={options ? AiFillPlusCircle : AiFillMinusCircle}
+        Icon={options ? AiFillMinusCircle : AiFillPlusCircle}
         title='Options'
         onClick={() => setOptions(!options)}
       />
@@ -108,7 +110,7 @@ const SideBar: FC<any> = (): JSX.Element => {
       )}
       <hr />
       <SideBarOption
-        Icon={channel ? AiFillPlusCircle : AiFillMinusCircle}
+        Icon={channel ? AiFillMinusCircle : AiFillPlusCircle}
         title='Channels'
         onClick={() => setChannel(!channel)}
       />

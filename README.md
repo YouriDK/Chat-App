@@ -18,3 +18,9 @@ Features :
 - Send button
 - Remplacer material par react-icons
 - Chercher de nouvelles polices
+
+Esthétiques :
+
+- Refaire le header
+
+- Il faut construire redux dans chat pour amener les infos , il va falloir unir message et détails

@@ -13,6 +13,8 @@
   --success: #15ff00;
   --red: #ff0054;
   --slack-color: #49274b;
+  --dark-slack-color: #340e36;
+  --lg-slack-color: #4a144dbb;
 }
 
 * {

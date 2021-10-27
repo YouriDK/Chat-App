@@ -1,6 +1,7 @@
 import React, { FC, MouseEventHandler } from 'react';
 import styled from 'styled-components';
 import { GrStatusUnknown } from 'react-icons/gr';
+import { Link } from 'react-router-dom';
 
 interface SideBarOptionProps {
   Icon: any;
@@ -39,7 +40,7 @@ const SideBarOptionConatiner = styled.div`
 
   :hover {
     opacity: 0.8;
-    background-color: #340e36;
+    background-color: var(--dark-slack-color);
   }
 
   > h3 {
@@ -49,11 +50,6 @@ const SideBarOptionConatiner = styled.div`
   > h3 > span {
     padding: 15px;
   }
-`;
-
-const SideBarOptionChannel = styled.h3`
-  padding: 10px 0;
-  font-weight: 300;
 `;
 
 export default SideBarOption;

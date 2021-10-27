@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Header from './Pages/Header';
 import SideBar from './Pages/SideBar';
@@ -7,6 +7,8 @@ import Chat from './Pages/Chat';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import Login from './Pages/Login';
 import { auth } from './firebase';
+import Home from './Pages/Home';
+import LoadingBox from './Components/LoadingBox';
 // import Spinner from 'react-spinkit';
 
 /*
@@ -20,16 +22,15 @@ TODO Mettre une forme Responsive
 TODO Arranger le display name dans le sideBar
 */
 
-const App: FC<any> = (): JSX.Element => {
+const App: FC<any> = (props: any): JSX.Element => {
   const [user, loading] = useAuthState(auth);
+  useEffect(() => {
+    console.log(props);
+  }, []);
   return loading ? (
     <AppLoading>
       <AppLoadingContents>
-        <img
-          src='https://www.esecad.com/wp-content/uploads/sites/38/2016/11/slack-chat.png'
-          alt=''
-        />
-        {/* <Spinner name='ball-spin-fade-loader' color='purple' fadeIn='none' /> */}
+        <LoadingBox Icon color='#4c956c' size={150} />
       </AppLoadingContents>
     </AppLoading>
   ) : (
@@ -43,9 +44,8 @@ const App: FC<any> = (): JSX.Element => {
             <AppBody>
               <SideBar />
               <Switch>
-                <Route path='/' exact>
-                  <Chat />
-                </Route>
+                <Route path='/chat/:id' component={Chat} />
+                <Route path='/' exact component={Home} />
               </Switch>
             </AppBody>
           </>

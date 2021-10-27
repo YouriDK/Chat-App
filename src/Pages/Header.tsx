@@ -1,32 +1,76 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import styled from 'styled-components';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../firebase';
 import { Avatar } from '@material-ui/core';
-import AccessTimeIcon from '@material-ui/icons/AccessTime';
-import SearchIcon from '@material-ui/icons/Search';
-import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
+import { AiFillClockCircle, AiOutlineSearch } from 'react-icons/ai';
+import { GoSignOut } from 'react-icons/go';
+import { Button } from 'reactstrap';
+import MesssageBox from '../Components/MesssageBox';
+import { sleep } from '../Utils/sleep';
 
 const Header: FC<any> = (): JSX.Element => {
   const [user] = useAuthState(auth);
+  const [search, setSearch] = useState('');
+  const [alert, setAlert] = useState(false);
+  const handleFeatureComing = async () => {
+    setAlert(true);
+    await sleep(2000);
+    setAlert(false);
+  };
   return (
     <HeaderContainer>
       <HeaderLeft>
-        <HeaderAvatar
-          onClick={() => auth.signOut()} // * Permet  de déconnecter en cliquant sur l'avatar
-          alt={user?.displayName || ''}
-          src={user?.photoURL || ''}
-        />
-        <AccessTimeIcon />
+        <Button
+          onClick={() => auth.signOut()}
+          style={{
+            backgroundColor: 'transparent',
+            borderColor: 'transparent',
+            color: 'white',
+          }}
+        >
+          <span>
+            <GoSignOut size={20} />
+            <span style={{ margin: '0 30px' }}>Sign-out</span>
+          </span>
+        </Button>
       </HeaderLeft>
 
       <HeaderSearch>
-        <SearchIcon />
-        <input placeholder='Search' />
+        <div
+          className='icon'
+          onClick={handleFeatureComing}
+          style={{ cursor: 'pointer' }}
+        >
+          <AiFillClockCircle
+            size={25}
+            onClick={handleFeatureComing}
+            color='white'
+          />
+        </div>
+        <input
+          placeholder='Search...'
+          name='search'
+          id='search'
+          value={search}
+          onChange={(e: any) => setSearch(e.target.value)}
+        />
+        <div
+          className='icon'
+          onClick={handleFeatureComing}
+          style={{ cursor: 'pointer' }}
+        >
+          <AiOutlineSearch size={25} color='white' />
+        </div>
       </HeaderSearch>
 
       <HeaderRight>
-        <HelpOutlineIcon />
+        {alert && <MesssageBox variant='info' text='feature incoming' />}
+        <HeaderAvatar
+          // * Permet  de déconnecter en cliquant sur l'avatar
+          alt={user?.displayName || ''}
+          src={user?.photoURL || ''}
+        />
       </HeaderRight>
     </HeaderContainer>
   );
@@ -36,12 +80,13 @@ const Header: FC<any> = (): JSX.Element => {
 // ! Les Flex permettent de détermliner le pourcentage qu'il va avoir sur la page en largeuy
 const HeaderSearch = styled.div`
   display: flex;
+  justify-content: space-between;
   flex: 0.4;
   opacity: 1;
   border-radius: 6px;
-  background-color: #421f44;
+  background-color: var(--lg-slack-color);
   text-align: center;
-  padding: 0 50px;
+  padding: 3px 10px;
   color: gray;
   border: 1px gray solid;
   > input {
@@ -51,6 +96,9 @@ const HeaderSearch = styled.div`
     min-width: 30vw;
     outline: 0;
     color: white;
+  }
+  > .icon :hover {
+    opacity: 0.6;
   }
 `;
 
@@ -69,8 +117,10 @@ const HeaderLeft = styled.div`
   flex: 0.3;
   display: flex;
   align-items: center;
-  margin-left: 20px;
-
+  margin-left: 10px;
+  > Button :hover {
+    opacity: 0.8;
+  }
   // * Pour configurer l'icone
   > .MuiSvgIcon-root {
     margin-left: auto;
@@ -87,12 +137,9 @@ const HeaderAvatar = styled(Avatar)`
 
 const HeaderRight = styled.div`
   display: flex;
+  justify-content: flex-end;
   flex: 0.3;
-  align-items: flex-end;
-
-  > .MuiSvgIcon-root {
-    margin-left: auto;
-    margin-right: 20px;
-  }
+  margin-left: auto;
+  margin-right: 20px;
 `;
 export default Header;
