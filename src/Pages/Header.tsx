@@ -31,7 +31,6 @@ const Header: FC<any> = (): JSX.Element => {
         >
           <span>
             <GoSignOut size={20} />
-            <span style={{ margin: '0 30px' }}>Sign-out</span>
           </span>
         </Button>
       </HeaderLeft>

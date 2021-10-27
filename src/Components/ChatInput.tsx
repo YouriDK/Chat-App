@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { auth, db } from '../firebase';
 import firebase from 'firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
-
+import { MdSend } from 'react-icons/md';
 const ChatInput: FC<any> = ({
   channelName,
   channelId,
@@ -14,18 +14,25 @@ const ChatInput: FC<any> = ({
   const [user] = useAuthState(auth); // *  Récupération des données de l'user lors du login
   const sendMessage = (e: any) => {
     e.preventDefault(); // * Permet de ne pas rafraichir la page
-    if (!channelId) {
-      return false;
-    }
+    if (input !== '') {
+      if (!channelId) {
+        return false;
+      }
 
-    db.collection('rooms').doc(channelId).collection('messages').add({
-      message: input,
-      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      user: user?.displayName,
-      userImage: user?.photoURL,
-    });
-    chatRef?.current.scrollIntoView({ behavior: 'smooth' }); // * Permet de Scroll down directement au changement
-    setInput('');
+      db.collection('rooms').doc(channelId).collection('messages').add({
+        message: input,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        user: user?.displayName,
+        userImage: user?.photoURL,
+      });
+      console.log('chatRef', chatRef.current);
+      if (chatRef?.current) {
+        chatRef?.current.scrollIntoView(); // * Permet de Scroll down directement au changement
+      } else {
+        console.log('chatRef', chatRef);
+      }
+      setInput('');
+    }
   };
 
   return (
@@ -34,10 +41,10 @@ const ChatInput: FC<any> = ({
         <input
           onChange={(e) => setInput(e.target.value)}
           value={input}
-          placeholder={`Message #${channelName}`}
+          placeholder={`Message sur ${channelName} ...`}
         />
-        <Button hidden type='submit' onClick={sendMessage}>
-          SEND{' '}
+        <Button type='submit' onClick={sendMessage}>
+          <MdSend size={35} style={{ padding: 2, marginRight: '15px' }} />
         </Button>
       </form>
     </ChatInputConainer>
@@ -45,24 +52,22 @@ const ChatInput: FC<any> = ({
 };
 const ChatInputConainer = styled.div`
   border-radius: 20px;
+  margin-bottom: 2%;
+
+  width: 100%;
+  margin: 10 0;
   > form {
     display: flex;
-    position: relative;
     justify-content: center;
   }
 
   > form > input {
-    position: fixed;
     bottom: 30px;
-    width: 60%;
+    width: 80%;
     border: 1px solid gray;
-    border-radius: 3px;
+    border-radius: 20px;
     padding: 20px;
     outline: none;
-  }
-
-  > form > button {
-    display: none !important;
   }
 `;
 

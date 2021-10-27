@@ -1,6 +1,14 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
-const Message: FC<any> = ({
+
+interface MessageProps {
+  message: string;
+  user: string;
+  timestamp: any;
+  userImage: string;
+  ref?: any;
+}
+const Message: FC<MessageProps> = ({
   message,
   user,
   timestamp,
@@ -22,14 +30,13 @@ const Message: FC<any> = ({
 const MessageContainer = styled.div`
   display: flex;
   align-items: center;
-  padding: 20px;
+  padding: 15px;
 
   > img {
-    height: 50px;
-    border-radius: 8px;
+    height: 40px;
+    border-radius: 20px;
   }
 `;
-
 const MessageInfo = styled.div`
   padding-left: 10px;
 
