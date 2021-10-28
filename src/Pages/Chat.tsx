@@ -7,7 +7,7 @@ import Message from '../Components/Message';
 import LoadingBox from '../Components/LoadingBox';
 import MesssageBox from '../Components/MesssageBox';
 import { BiConversation } from 'react-icons/bi';
-import { GrSettingsOption } from 'react-icons/gr';
+import { FiSettings } from 'react-icons/fi';
 import { sleep } from '../Utils/sleep';
 const Chat: FC<any> = (props: any): JSX.Element => {
   const chatId = props.match.params.id;
@@ -40,32 +40,41 @@ const Chat: FC<any> = (props: any): JSX.Element => {
   ) : !details && !messages ? (
     <MesssageBox variant='danger' text='Intels missing !' />
   ) : (
-    <ChatContainer>
-      {alert && <MesssageBox variant='info' text='feature incoming' />}
+    <ChatContainer className='ChatContainer'>
       <Header>
         <HeraderLeft>
           <BiConversation
             size={40}
-            style={{ padding: 2, marginRight: '15px' }}
+            className='icons'
+            style={{
+              padding: 2,
+              marginRight: '15px',
+              color: 'var(--ligth-bg)',
+            }}
           />
           <h3>
-            <strong>{convoName}</strong>
+            <strong style={{ color: 'var(--ligth-bg)' }}>{convoName}</strong>
           </h3>
         </HeraderLeft>
         <HeaderRight
           onClick={handleFeatureComing}
           style={{ cursor: 'pointer' }}
         >
-          <GrSettingsOption
+          <FiSettings
+            className='icons'
             size={25}
-            style={{ padding: 2, marginRight: '5px' }}
+            style={{ padding: 2, marginRight: '5px', color: 'var(--ligth-bg)' }}
           />
           <h3>
-            <strong style={{ marginRight: '15px' }}>Details</strong>
+            <strong style={{ marginRight: '15px', color: 'var(--ligth-bg)' }}>
+              Details
+            </strong>
           </h3>
         </HeaderRight>
       </Header>
+      {alert && <MesssageBox variant='info' text='feature incoming' />}
       <ChatMessages>
+        <br />
         {messages?.docs.map((doc: any) => {
           const { message, timestamp, user, userImage } = doc.data();
           return (
@@ -95,7 +104,7 @@ const Header = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 5px;
-  border-bottom: 1px solid lightgray;
+  border-bottom: 3px solid var(--background);
 `;
 const HeraderLeft = styled.div`
   display: flex;

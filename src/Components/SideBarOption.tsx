@@ -40,7 +40,7 @@ const SideBarOptionConatiner = styled.div`
 
   :hover {
     opacity: 0.8;
-    background-color: var(--dark-slack-color);
+    background-color: var(--dark-background);
   }
 
   > h3 {

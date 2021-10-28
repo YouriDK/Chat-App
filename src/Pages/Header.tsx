@@ -44,7 +44,7 @@ const Header: FC<any> = (): JSX.Element => {
           <AiFillClockCircle
             size={25}
             onClick={handleFeatureComing}
-            color='white'
+            style={{ color: 'var(--primary)' }}
           />
         </div>
         <input
@@ -59,7 +59,7 @@ const Header: FC<any> = (): JSX.Element => {
           onClick={handleFeatureComing}
           style={{ cursor: 'pointer' }}
         >
-          <AiOutlineSearch size={25} color='white' />
+          <AiOutlineSearch size={25} style={{ color: 'var(--primary)' }} />
         </div>
       </HeaderSearch>
 
@@ -83,11 +83,11 @@ const HeaderSearch = styled.div`
   flex: 0.4;
   opacity: 1;
   border-radius: 6px;
-  background-color: var(--lg-slack-color);
+  background-color: var(--lg-background);
   text-align: center;
   padding: 3px 10px;
   color: gray;
-  border: 1px gray solid;
+  border: 1px var(--primary) solid;
   > input {
     background-color: transparent;
     border: none;
@@ -108,7 +108,7 @@ const HeaderContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 10px 0;
-  background-color: var(--slack-color);
+  background-color: var(--background);
   color: white;
 `;
 

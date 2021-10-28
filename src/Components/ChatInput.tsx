@@ -25,11 +25,10 @@ const ChatInput: FC<any> = ({
         user: user?.displayName,
         userImage: user?.photoURL,
       });
-      console.log('chatRef', chatRef.current);
+
       if (chatRef?.current) {
         chatRef?.current.scrollIntoView(); // * Permet de Scroll down directement au changement
       } else {
-        console.log('chatRef', chatRef);
       }
       setInput('');
     }
@@ -42,9 +41,17 @@ const ChatInput: FC<any> = ({
           onChange={(e) => setInput(e.target.value)}
           value={input}
           placeholder={`Message sur ${channelName} ...`}
+          style={{ backgroundColor: 'var(--dark-bg)', color: 'white' }}
         />
         <Button type='submit' onClick={sendMessage}>
-          <MdSend size={35} style={{ padding: 2, marginRight: '15px' }} />
+          <MdSend
+            size={35}
+            style={{
+              padding: 2,
+              marginRight: '15px',
+              color: 'var(--ligth-bg)',
+            }}
+          />
         </Button>
       </form>
     </ChatInputConainer>

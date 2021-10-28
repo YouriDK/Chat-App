@@ -144,28 +144,28 @@ const SideBar: FC<any> = (): JSX.Element => {
 };
 
 const SidebarContainer = styled.div`
-  background-color: var(--slack-color);
+  background-color: var(--background);
   color: white;
   flex: 0.3;
-  border-top: 1px solid var(--slack-color);
+  border-top: 1px solid var(--background);
   max-width: 260px;
   margin-top: 60px;
 
   > hr {
     margin-top: 10px;
     margin-bottom: 10px;
-    border: 1px solid var(--slack-color);
+    border: 1px solid var(--background);
   }
 `;
 
 const SidebarHeader = styled.div`
   display: flex;
-  border-bottom: 1px solid var(--slack-color);
+  border-bottom: 1px solid var(--background);
   padding: 13px;
 
   > .MuiSvgIcon-root {
     padding: 8px;
-    color: var(--slack-color);
+    color: var(--background);
     font-size: 18px;
     background-color: white;
     border-radius: 999px;

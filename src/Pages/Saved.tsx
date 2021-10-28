@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { ClockLoader } from 'react-spinners';
 import styled from 'styled-components';
 import DisplayText from '../Components/DisplayText';
-import { BIGCSS, inter } from '../Types/Spinners';
+import { BIGCSS, primary } from '../Types/Spinners';
 
 const Saved: FC<any> = (): JSX.Element => {
   return (
@@ -11,7 +11,7 @@ const Saved: FC<any> = (): JSX.Element => {
       <br />
       <br />
       <br />
-      <ClockLoader color={inter} loading css={BIGCSS} size={150} />
+      <ClockLoader color={primary} loading css={BIGCSS} size={150} />
     </SavedConatiner>
   );
 };

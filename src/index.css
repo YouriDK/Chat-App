@@ -1,20 +1,16 @@
 :root {
-  --background: #fefee3;
-  --primary: #ff9f1c;
-  --ligth-bg: #ffc9b9;
-  --secondary: #2c6e49;
-  --intermediate: #4c956c;
+  --background: #003f88;
+  --ligth-bg: #00509d;
+  --dark-bg: #00296b;
+  --primary: #fdc500;
+  --ligth-primary: #ffd500;
 
-  --orange: #ffbf69;
-  --grey: #a19f9f;
+  --white: #ffffff;
+  --red: #ff0054;
+  --success: #15ff00;
   --black: #000000;
   --clear-black: #252525;
-  --white: #ffffff;
-  --success: #15ff00;
-  --red: #ff0054;
-  --slack-color: #49274b;
-  --dark-slack-color: #340e36;
-  --lg-slack-color: #4a144dbb;
+  --grey: #a19f9f;
 }
 
 * {
@@ -46,7 +42,7 @@ body {
   padding: 0;
 }
 body {
-  --slack-color: #3f0f40;
+  /* --background: #3f0f40; */
   overflow: hidden;
 
   margin: 0;
@@ -78,4 +74,12 @@ code {
 .alert-success {
   color: #188633;
   background-color: #ddffe6;
+}
+
+.ChatContainer {
+  background-color: var(--primary);
+}
+
+input::placeholder {
+  color: white;
 }
