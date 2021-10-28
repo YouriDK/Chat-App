@@ -20,31 +20,29 @@ import { useCollection } from 'react-firebase-hooks/firestore';
 import { auth, db } from '../firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useDispatch } from 'react-redux';
-import { sleep } from '../Utils/sleep';
-import MesssageBox from '../Components/MesssageBox';
+// import CustomModal from '../Components/CustomModal';
 
-const SideBar: FC<any> = (props: any): JSX.Element => {
+const SideBar: FC<any> = (): JSX.Element => {
   const [channels, loading, error] = useCollection(db.collection('rooms'));
   const [user] = useAuthState(auth);
   const dispatch = useDispatch();
-  const [alert, setAlert] = useState(false);
+
   const [channel, setChannel] = useState(true);
+  // const [channelName, setChannelName] = useState('');
+  // const [modal, setModal] = useState(false);
   const [options, setOptions] = useState(true);
   const history = useHistory();
-  const handleFeatureComing = async () => {
-    setAlert(true);
-    await sleep(2000);
-    setAlert(false);
-  };
+
   const addChannel = () => {
-    console.log('ADD CHANNEL');
     const channelName = prompt('Please enter the channel name :');
+    //setModal(true);
     if (channelName) {
       db.collection('rooms').add({
         name: channelName,
       });
     }
   };
+
   const selectChannel = (id: string) => {
     history.push(`/chat/${id}`);
     if (id) {
@@ -56,83 +54,92 @@ const SideBar: FC<any> = (props: any): JSX.Element => {
     }
   };
   return (
-    <SidebarContainer>
-      <SidebarHeader>
-        <SidebarInfo>
-          <WiMoonAltNew color='green' size={20} />
-          <h3>{user?.displayName}</h3>
-        </SidebarInfo>
-      </SidebarHeader>
-      <SideBarOption
-        Icon={options ? AiFillMinusCircle : AiFillPlusCircle}
-        title='Options'
-        onClick={() => setOptions(!options)}
-      />
-      {options && (
-        <>
-          <SideBarOption
-            Icon={BiCommentDetail}
-            title='Threads'
-            onClick={handleFeatureComing}
-          />
-          <SideBarOption
-            Icon={AiOutlineInbox}
-            title='Mentions & reactions'
-            onClick={handleFeatureComing}
-          />
-          <SideBarOption
-            Icon={MdSave}
-            title='Saved Items'
-            onClick={handleFeatureComing}
-          />
-          <SideBarOption
-            Icon={CgBrowser}
-            title='Channel browser'
-            onClick={handleFeatureComing}
-          />
-          <SideBarOption
-            Icon={BsFillPeopleFill}
-            title='People & user groups'
-            onClick={handleFeatureComing}
-          />
-          <SideBarOption
-            Icon={AiFillAppstore}
-            title='Apps'
-            onClick={handleFeatureComing}
-          />
-          <SideBarOption
-            Icon={AiFillFileText}
-            title='File browser'
-            onClick={handleFeatureComing}
-          />
-          {alert && <MesssageBox variant='info' text={'Feature incoming'} />}
-        </>
-      )}
-      <hr />
-      <SideBarOption
-        Icon={channel ? AiFillMinusCircle : AiFillPlusCircle}
-        title='Channels'
-        onClick={() => setChannel(!channel)}
-      />
-      {channel && (
-        <>
-          <SideBarOption
-            Icon={BiMessageAdd}
-            title='Add channel'
-            onClick={addChannel}
-          />
-
-          {channels?.docs.map((doc) => (
+    <>
+      {/* <CustomModal
+        text=''
+        display={false}
+        value={channelName}
+        change={setChannelName}
+        handleOpen={setModal}
+        isOpen={modal}
+      /> */}
+      <SidebarContainer>
+        <SidebarHeader>
+          <SidebarInfo>
+            <WiMoonAltNew color='green' size={20} />
+            <h3>{user?.displayName}</h3>
+          </SidebarInfo>
+        </SidebarHeader>
+        <SideBarOption
+          Icon={options ? AiFillMinusCircle : AiFillPlusCircle}
+          title='Options'
+          onClick={() => setOptions(!options)}
+        />
+        {options && (
+          <>
             <SideBarOption
-              Icon={GiConversation}
-              key={doc.id}
-              title={doc.data().name}
-              onClick={() => selectChannel(doc.id)}
+              Icon={BiCommentDetail}
+              title='Threads'
+              onClick={() => history.push(`/threads`)}
             />
-          ))}
-        </>
-      )}
-    </SidebarContainer>
+            <SideBarOption
+              Icon={AiOutlineInbox}
+              title='Mentions & reactions'
+              onClick={() => history.push(`/mentions`)}
+            />
+            <SideBarOption
+              Icon={MdSave}
+              title='Saved Items'
+              onClick={() => history.push(`/saved`)}
+            />
+            <SideBarOption
+              Icon={CgBrowser}
+              title='Channel browser'
+              onClick={() => history.push(`/channel`)}
+            />
+            <SideBarOption
+              Icon={BsFillPeopleFill}
+              title='People & user groups'
+              onClick={() => history.push(`/people`)}
+            />
+            <SideBarOption
+              Icon={AiFillAppstore}
+              title='Apps'
+              onClick={() => history.push(`/apps`)}
+            />
+            <SideBarOption
+              Icon={AiFillFileText}
+              title='File browser'
+              onClick={() => history.push(`/files`)}
+            />
+          </>
+        )}
+        <hr />
+        <SideBarOption
+          Icon={channel ? AiFillMinusCircle : AiFillPlusCircle}
+          title='Channels'
+          onClick={() => setChannel(!channel)}
+        />
+        {channel && (
+          <>
+            <SideBarOption
+              Icon={BiMessageAdd}
+              title='Add channel'
+              onClick={addChannel}
+            />
+
+            {channels?.docs.map((doc) => (
+              <SideBarOption
+                Icon={GiConversation}
+                key={doc.id}
+                title={doc.data().name}
+                onClick={() => selectChannel(doc.id)}
+              />
+            ))}
+          </>
+        )}
+      </SidebarContainer>
+    </>
   );
 };
 

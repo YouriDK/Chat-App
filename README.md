@@ -21,6 +21,8 @@ Features :
 
 Esthétiques :
 
-- Refaire le header
+- Opacité sur les boutons en hover
 
-- Il faut construire redux dans chat pour amener les infos , il va falloir unir message et détails
+- Il faut construire redux dans chat pour amener les infos , il va falloir unir message et détails (redux ne passe pas avec useCollection)
+
+- Faire les underconstruction pages
