@@ -13,6 +13,8 @@ const ChatInput: FC<any> = ({
   const [input, setInput] = useState('');
   const [user] = useAuthState(auth); // *  Récupération des données de l'user lors du login
   const sendMessage = (e: any) => {
+    console.log('user', user);
+    // TODO console.log('user', user?.uid); Rajouter l'uid dans les intels
     e.preventDefault(); // * Permet de ne pas rafraichir la page
     if (input !== '') {
       if (!channelId) {
@@ -24,6 +26,7 @@ const ChatInput: FC<any> = ({
         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
         user: user?.displayName,
         userImage: user?.photoURL,
+        uid: user?.uid,
       });
 
       if (chatRef?.current) {
@@ -37,11 +40,10 @@ const ChatInput: FC<any> = ({
   return (
     <ChatInputConainer>
       <form>
-        <input
+        <textarea
           onChange={(e) => setInput(e.target.value)}
           value={input}
           placeholder={`Message sur ${channelName} ...`}
-          style={{ backgroundColor: 'var(--dark-bg)', color: 'white' }}
         />
         <Button type='submit' onClick={sendMessage}>
           <MdSend
@@ -68,9 +70,11 @@ const ChatInputConainer = styled.div`
     justify-content: center;
   }
 
-  > form > input {
+  > form > textarea {
     bottom: 30px;
     width: 80%;
+    color: white;
+    background-color: var(--dark-bg);
     border: 1px solid gray;
     border-radius: 20px;
     padding: 20px;

@@ -69,6 +69,7 @@ const App: FC<any> = (): JSX.Element => {
 const AppBody = styled.div`
   display: flex;
   height: 100vh;
+  /* min-width: 85%; */
 `;
 
 const AppLoading = styled.div`

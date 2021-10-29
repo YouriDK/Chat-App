@@ -21,14 +21,14 @@ const Message: FC<MessageProps> = ({
         <h4 style={{ color: 'var(--ligth-primary)' }}>
           {user} <span>{new Date(timestamp?.toDate()).toUTCString()}</span>
         </h4>
-        <p style={{ color: 'white' }}>{message}</p>
+        <p>{message}</p>
       </MessageInfo>
     </MessageContainer>
   );
 };
 
 const MessageContainer = styled.div`
-  width: 30%;
+  width: 40%;
   margin-bottom: 20px;
   margin-left: 20px;
 
@@ -45,12 +45,17 @@ const MessageContainer = styled.div`
 `;
 const MessageInfo = styled.div`
   padding-left: 10px;
-
+  max-width: 90%;
   > h4 > span {
     color: white;
     font-weight: 300;
     margin-left: 4px;
     font-size: 10px;
+  }
+  > p {
+    max-width: 90%;
+    color: white;
+    overflow-wrap: break-word;
   }
 `;
 

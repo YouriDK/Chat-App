@@ -9,11 +9,15 @@ import MesssageBox from '../Components/MesssageBox';
 import { BiConversation } from 'react-icons/bi';
 import { FiSettings } from 'react-icons/fi';
 import { sleep } from '../Utils/sleep';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from '../firebase';
+
 const Chat: FC<any> = (props: any): JSX.Element => {
   const chatId = props.match.params.id;
   const chatRef = useRef<HTMLHeadingElement>(null);
   const [alert, setAlert] = useState(false);
   const [convoName, setConvoName] = useState('');
+  const [user] = useAuthState(auth);
   const [details] = useDocument(chatId && db.collection('rooms').doc(chatId));
   const [messages, loading] = useCollection(
     chatId &&
@@ -30,6 +34,9 @@ const Chat: FC<any> = (props: any): JSX.Element => {
     setConvoName(details?.data()?.name);
   }, [details, messages?.docs]);
 
+  const checkUuid = (uid: string): boolean => {
+    return uid === user?.uid;
+  };
   const handleFeatureComing = async () => {
     setAlert(true);
     await sleep(2000);
@@ -76,15 +83,18 @@ const Chat: FC<any> = (props: any): JSX.Element => {
       <ChatMessages>
         <br />
         {messages?.docs.map((doc: any) => {
-          const { message, timestamp, user, userImage } = doc.data();
+          const { message, timestamp, user, userImage, uid } = doc.data();
+          console.log(doc.data());
           return (
-            <Message
-              key={doc.id}
-              message={message}
-              timestamp={timestamp}
-              user={user}
-              userImage={userImage}
-            />
+            <div className={checkUuid(uid) ? 'Message' : ''}>
+              <Message
+                key={doc.id}
+                message={message}
+                timestamp={timestamp}
+                user={user}
+                userImage={userImage}
+              />
+            </div>
           );
         })}
         <ChatBottom ref={chatRef} />
@@ -121,13 +131,21 @@ const ChatContainer = styled.div`
   flex: 0.7;
   flex-grow: 1;
   margin-top: 60px;
-  width: 100%;
+  max-width: 85%;
 `;
 
 const ChatMessages = styled.div`
   display: flex;
+
   flex-direction: column;
   overflow-y: scroll;
   min-height: 80%;
+  /* max-width: 50%; */
+
+  > .Message {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 15px;
+  }
 `;
 const ChatBottom = styled.div``;

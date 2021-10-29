@@ -147,6 +147,7 @@ const SidebarContainer = styled.div`
   background-color: var(--background);
   color: white;
   flex: 0.3;
+  min-width: 15%;
   border-top: 1px solid var(--background);
   max-width: 260px;
   margin-top: 60px;
