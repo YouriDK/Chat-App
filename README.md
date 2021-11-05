@@ -5,6 +5,10 @@ Go to Fire.google.com -> créer projet -> faire suivant puis prendre la config e
 
 - Supprimer le dossier Counter et garder le fichier CounterSlice
 
+# Build
+
+npm run build avant chaque deploy
+
 # No SQL structure
 
 Basé sur des collections comme MongoDB
