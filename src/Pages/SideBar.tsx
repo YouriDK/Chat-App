@@ -23,7 +23,7 @@ import { useDispatch } from 'react-redux';
 // import CustomModal from '../Components/CustomModal';
 
 const SideBar: FC<any> = (): JSX.Element => {
-  const [channels, loading, error] = useCollection(db.collection('rooms'));
+  const [channels] = useCollection(db.collection('rooms'));
   const [user] = useAuthState(auth);
   const dispatch = useDispatch();
 
