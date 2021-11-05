@@ -5,6 +5,7 @@ import { auth, db } from '../firebase';
 import firebase from 'firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { MdSend } from 'react-icons/md';
+// import Picker from 'emoji-picker-react';
 const ChatInput: FC<any> = ({
   channelName,
   channelId,
@@ -12,6 +13,11 @@ const ChatInput: FC<any> = ({
 }): JSX.Element => {
   const [input, setInput] = useState('');
   const [user] = useAuthState(auth); // *  Récupération des données de l'user lors du login
+  // const [chosenEmoji] = useState(null);
+  // const onEmojiClick = (event: any, emojiObject: any) => {
+  //   setInput(input + emojiObject);
+  // };
+
   const sendMessage = (e: any) => {
     console.log('user', user);
     // TODO console.log('user', user?.uid); Rajouter l'uid dans les intels
@@ -39,12 +45,14 @@ const ChatInput: FC<any> = ({
 
   return (
     <ChatInputConainer>
+      {/* <Picker onEmojiClick={onEmojiClick} /> */}
       <form>
         <textarea
           onChange={(e) => setInput(e.target.value)}
           value={input}
           placeholder={`Message sur ${channelName} ...`}
         />
+
         <Button type='submit' onClick={sendMessage}>
           <MdSend
             size={35}

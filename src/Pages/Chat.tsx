@@ -1,4 +1,5 @@
 import React, { FC, useRef, useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useCollection, useDocument } from 'react-firebase-hooks/firestore';
 import styled from 'styled-components';
 import ChatInput from '../Components/ChatInput';
@@ -7,6 +8,7 @@ import Message from '../Components/Message';
 import LoadingBox from '../Components/LoadingBox';
 import MesssageBox from '../Components/MesssageBox';
 import { BiConversation } from 'react-icons/bi';
+import { FaTrash } from 'react-icons/fa';
 import { FiSettings } from 'react-icons/fi';
 import { sleep } from '../Utils/sleep';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -18,6 +20,7 @@ const Chat: FC<any> = (props: any): JSX.Element => {
   const [alert, setAlert] = useState(false);
   const [convoName, setConvoName] = useState('');
   const [user] = useAuthState(auth);
+  const history = useHistory();
   const [details] = useDocument(chatId && db.collection('rooms').doc(chatId));
   const [messages, loading] = useCollection(
     chatId &&
@@ -41,6 +44,14 @@ const Chat: FC<any> = (props: any): JSX.Element => {
     setAlert(true);
     await sleep(2000);
     setAlert(false);
+  };
+
+  const deleteChat = () => {
+    db.collection('rooms') // * Collections Rooms
+      .doc(chatId) // * Sélection de la room en fonction de son ID
+      .delete()
+      .then(() => history.push('/'))
+      .catch((err: any) => console.log('ERREUR DE SUPPRESION !'));
   };
   return loading ? (
     <LoadingBox Icon />
@@ -72,11 +83,11 @@ const Chat: FC<any> = (props: any): JSX.Element => {
             size={25}
             style={{ padding: 2, marginRight: '5px', color: 'var(--ligth-bg)' }}
           />
-          <h3>
-            <strong style={{ marginRight: '15px', color: 'var(--ligth-bg)' }}>
-              Details
-            </strong>
-          </h3>
+
+          <FaTrash
+            style={{ marginRight: '15px', color: 'var(--ligth-bg)' }}
+            onClick={() => deleteChat()}
+          />
         </HeaderRight>
       </Header>
       {alert && <MesssageBox variant='info' text='feature incoming' />}
