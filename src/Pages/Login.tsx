@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import styled from 'styled-components';
 import { auth, provider } from '../firebase';
 import { Button } from '@material-ui/core';

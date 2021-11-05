@@ -1,7 +1,6 @@
 import React, { FC, MouseEventHandler } from 'react';
 import styled from 'styled-components';
 import { GrStatusUnknown } from 'react-icons/gr';
-import { Link } from 'react-router-dom';
 
 interface SideBarOptionProps {
   Icon: any;
