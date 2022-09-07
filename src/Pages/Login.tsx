@@ -17,8 +17,8 @@ const Login: FC<any> = (): JSX.Element => {
           src='https://www.esecad.com/wp-content/uploads/sites/38/2016/11/slack-chat.png'
           alt=''
         />{' '}
-        <h1>Sign in to the clone</h1>
-        <p> Second project portfolio</p>
+        <h1>Sign In</h1>
+        <p> Chat App</p>
         <Button onClick={SignIn}>Sign in with Google</Button>
       </LoginInnerContainer>
     </LoginContainer>

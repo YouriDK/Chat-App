@@ -58,9 +58,20 @@ const Chat: FC<any> = (props: any): JSX.Element => {
   ) : !details && !messages ? (
     <MesssageBox variant='danger' text='Intels missing !' />
   ) : (
-    <ChatContainer className='ChatContainer'>
-      <Header>
-        <HeraderLeft>
+    <div
+      className='flex flex-col bg-transparent p-[5px] h-full'
+      style={{ flex: '0.7', flexGrow: 1 }}
+    >
+      <div
+        className='flex justify-between chat-header'
+        style={{
+          padding: '5px',
+          borderRadius: '8px',
+          width: '80%',
+          margin: 'auto',
+        }}
+      >
+        <div className='flex items-center'>
           <BiConversation
             size={40}
             className='icons'
@@ -73,8 +84,9 @@ const Chat: FC<any> = (props: any): JSX.Element => {
           <h3>
             <strong style={{ color: 'var(--ligth-bg)' }}>{convoName}</strong>
           </h3>
-        </HeraderLeft>
-        <HeaderRight
+        </div>
+        <div
+          className='flex items-center'
           onClick={handleFeatureComing}
           style={{ cursor: 'pointer' }}
         >
@@ -88,17 +100,22 @@ const Chat: FC<any> = (props: any): JSX.Element => {
             style={{ marginRight: '15px', color: 'var(--ligth-bg)' }}
             onClick={() => deleteChat()}
           />
-        </HeaderRight>
-      </Header>
-      {alert && <MesssageBox variant='info' text='feature incoming' />}
-      <ChatMessages>
+        </div>
+      </div>
+
+      <div className='chat-messages flex flex-col h-full'>
         <br />
         {messages?.docs.map((doc: any) => {
           const { message, timestamp, user, userImage, uid } = doc.data();
-          console.log(doc.data());
           return (
-            <div className={checkUuid(uid) ? 'Message' : ''}>
+            <div
+              className={`${
+                checkUuid(uid) ? 'flex justify-end' : 'flex justify-start'
+              } `}
+              style={{ maxWidth: '99%' }}
+            >
               <Message
+                me={checkUuid(uid)}
                 key={doc.id}
                 message={message}
                 timestamp={timestamp}
@@ -108,55 +125,16 @@ const Chat: FC<any> = (props: any): JSX.Element => {
             </div>
           );
         })}
-        <ChatBottom ref={chatRef} />
-      </ChatMessages>
-
-      <ChatInput // * Barre pour écrire un message
+        <div ref={chatRef} />
+      </div>
+      {alert && <MesssageBox variant='info' text='Feature incoming....' />}
+      <ChatInput
+        // * Barre pour écrire un message
         chatRef={chatRef}
         channelName={details?.data()?.name}
         channelId={chatId}
       />
-    </ChatContainer>
+    </div>
   );
 };
 export default Chat;
-
-const Header = styled.div`
-  display: flex;
-  justify-content: space-between;
-  padding: 5px;
-  border-bottom: 3px solid var(--background);
-`;
-const HeraderLeft = styled.div`
-  display: flex;
-  align-items: center;
-`;
-const HeaderRight = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const ChatContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex: 0.7;
-  flex-grow: 1;
-  margin-top: 60px;
-  max-width: 85%;
-`;
-
-const ChatMessages = styled.div`
-  display: flex;
-
-  flex-direction: column;
-  overflow-y: scroll;
-  min-height: 80%;
-  /* max-width: 50%; */
-
-  > .Message {
-    display: flex;
-    justify-content: flex-end;
-    margin-right: 15px;
-  }
-`;
-const ChatBottom = styled.div``;

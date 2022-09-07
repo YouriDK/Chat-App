@@ -1,10 +1,9 @@
 import { Button } from '@material-ui/core';
-import React, { FC, useState } from 'react';
-import styled from 'styled-components';
-import { auth, db } from '../firebase';
 import firebase from 'firebase';
+import { FC, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { MdSend } from 'react-icons/md';
+import { auth, db } from '../firebase';
 // import Picker from 'emoji-picker-react';
 const ChatInput: FC<any> = ({
   channelName,
@@ -44,7 +43,7 @@ const ChatInput: FC<any> = ({
   };
 
   return (
-    <ChatInputConainer>
+    <div className='chat-input'>
       {/* <Picker onEmojiClick={onEmojiClick} /> */}
       <form>
         <textarea
@@ -64,30 +63,8 @@ const ChatInput: FC<any> = ({
           />
         </Button>
       </form>
-    </ChatInputConainer>
+    </div>
   );
 };
-const ChatInputConainer = styled.div`
-  border-radius: 20px;
-  margin-bottom: 2%;
-
-  width: 100%;
-  margin: 10 0;
-  > form {
-    display: flex;
-    justify-content: center;
-  }
-
-  > form > textarea {
-    bottom: 30px;
-    width: 80%;
-    color: white;
-    background-color: var(--dark-bg);
-    border: 1px solid gray;
-    border-radius: 20px;
-    padding: 20px;
-    outline: none;
-  }
-`;
 
 export default ChatInput;

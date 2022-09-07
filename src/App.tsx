@@ -1,21 +1,20 @@
 import { FC } from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import Header from './Pages/Header';
-import SideBar from './Pages/SideBar';
-import styled from 'styled-components';
-import Chat from './Pages/Chat';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import Login from './Pages/Login';
-import { auth } from './firebase';
-import Home from './Pages/Home';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import LoadingBox from './Components/LoadingBox';
-import Threads from './Pages/Threads';
-import Mention from './Pages/Mention';
-import Saved from './Pages/Saved';
-import Channel from './Pages/Channel';
-import People from './Pages/People';
+import { auth } from './firebase';
 import Apps from './Pages/Apps';
+import Channel from './Pages/Channel';
+import Chat from './Pages/Chat';
 import Files from './Pages/Files';
+import Header from './Pages/Header';
+import Home from './Pages/Home';
+import LeftMenu from './Pages/LeftMenu';
+import Login from './Pages/Login';
+import Mention from './Pages/Mention';
+import People from './Pages/People';
+import Saved from './Pages/Saved';
+import Threads from './Pages/Threads';
 
 /*
 TODO Implémenter le Side Bar
@@ -32,66 +31,42 @@ const App: FC<any> = (): JSX.Element => {
   const [user, loading] = useAuthState(auth);
 
   return loading ? (
-    <AppLoading>
-      <AppLoadingContents>
+    <div
+      className='grid place-items-center'
+      style={{ height: '100vh', width: '100vw' }}
+    >
+      <div
+        className='flex flex-col justify-center text-center items-center'
+        style={{ paddingBottom: '100px' }}
+      >
         <LoadingBox Icon color='#4c956c' size={150} />
-      </AppLoadingContents>
-    </AppLoading>
+      </div>
+    </div>
   ) : (
-    <>
-      <Router>
-        {!user ? (
-          <Login />
-        ) : (
-          <>
-            <Header />
-            <AppBody>
-              <SideBar />
-              <Switch>
-                <Route path='/chat/:id' component={Chat} />
-                <Route path='/threads' component={Threads} />
-                <Route path='/mentions' component={Mention} />
-                <Route path='/saved' component={Saved} />
-                <Route path='/channel' component={Channel} />
-                <Route path='/people' component={People} />
-                <Route path='/apps' component={Apps} />
-                <Route path='/files' component={Files} />
-                <Route path='/' exact component={Home} />
-              </Switch>
-            </AppBody>
-          </>
-        )}
-      </Router>
-    </>
+    <Router>
+      {!user ? (
+        <Login />
+      ) : (
+        <>
+          <Header />
+          <div className='flex h-full'>
+            <LeftMenu />
+            <Switch>
+              <Route path='/chat/:id' component={Chat} />
+              <Route path='/threads' component={Threads} />
+              <Route path='/mentions' component={Mention} />
+              <Route path='/saved' component={Saved} />
+              <Route path='/channel' component={Channel} />
+              <Route path='/people' component={People} />
+              <Route path='/apps' component={Apps} />
+              <Route path='/files' component={Files} />
+              <Route path='/' exact component={Home} />
+            </Switch>
+          </div>
+        </>
+      )}
+    </Router>
   );
 };
-
-const AppBody = styled.div`
-  display: flex;
-  height: 100vh;
-  /* min-width: 85%; */
-`;
-
-const AppLoading = styled.div`
-  display: grid;
-  place-items: center;
-  height: 100vh;
-  width: 100vw;
-`;
-
-const AppLoadingContents = styled.div`
-  text-align: center;
-  padding-bottom: 100px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  > img {
-    height: 100px;
-    padding: 20px;
-    margin-bottom: 40px;
-  }
-`;
 
 export default App;

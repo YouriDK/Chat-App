@@ -32,10 +32,10 @@ const SideBarOption: FC<SideBarOptionProps> = ({
 
 const SideBarOptionConatiner = styled.div`
   display: flex;
-  font-size: 12px;
   align-items: center;
   padding-left: 2px;
   cursor: pointer;
+  margin-top: 10px;
 
   :hover {
     opacity: 0.8;
@@ -44,6 +44,7 @@ const SideBarOptionConatiner = styled.div`
 
   > h3 {
     font-weight: 500;
+    font-size: 1.75rem;
   }
 
   > h3 > span {
