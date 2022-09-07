@@ -97,7 +97,12 @@ const Chat: FC<any> = (props: any): JSX.Element => {
           />
 
           <FaTrash
-            style={{ marginRight: '15px', color: 'var(--ligth-bg)' }}
+            size={20}
+            style={{
+              marginLeft: '15px',
+              marginRight: '15px',
+              color: 'var(--ligth-bg)',
+            }}
             onClick={() => deleteChat()}
           />
         </div>
