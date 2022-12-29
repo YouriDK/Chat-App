@@ -1,13 +1,18 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { AiFillClockCircle, AiOutlineSearch } from 'react-icons/ai';
 import { GoSignOut } from 'react-icons/go';
 import { auth } from '../firebase';
-import { sleep } from '../Utils/sleep';
+import { sleep } from '../Utils/utils';
 
 const Header: FC<any> = (): JSX.Element => {
   const [user] = useAuthState(auth);
   const [search, setSearch] = useState('');
+
+  useEffect(() => {
+    console.log('USER', user);
+    console.log('Proho', user?.photoURL);
+  }, [user]);
 
   const handleFeatureComing = async () => {
     const temp = search;

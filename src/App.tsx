@@ -1,20 +1,20 @@
 import { FC } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import LoadingBox from './Components/LoadingBox';
+import LoadingBox from './components/LoadingBox';
 import { auth } from './firebase';
-import Apps from './Pages/Apps';
-import Channel from './Pages/Channel';
-import Chat from './Pages/Chat';
-import Files from './Pages/Files';
-import Header from './Pages/Header';
-import Home from './Pages/Home';
-import LeftMenu from './Pages/LeftMenu';
-import Login from './Pages/Login';
-import Mention from './Pages/Mention';
-import People from './Pages/People';
-import Saved from './Pages/Saved';
-import Threads from './Pages/Threads';
+import Apps from './pages/Apps';
+import Channel from './pages/Channel';
+import Chat from './pages/Chat';
+import Files from './pages/Files';
+import Header from './pages/Header';
+import Home from './pages/Home';
+import LeftMenu from './pages/LeftMenu';
+import Login from './pages/Login';
+import Mention from './pages/Mention';
+import People from './pages/People';
+import Saved from './pages/Saved';
+import Threads from './pages/Threads';
 
 /*
 TODO Implémenter le Side Bar

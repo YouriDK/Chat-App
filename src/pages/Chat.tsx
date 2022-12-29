@@ -1,18 +1,18 @@
-import React, { FC, useRef, useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { FC, useEffect, useRef, useState } from 'react';
 import { useCollection, useDocument } from 'react-firebase-hooks/firestore';
-import styled from 'styled-components';
-import ChatInput from '../Components/ChatInput';
-import { db } from '../firebase';
-import Message from '../Components/Message';
-import LoadingBox from '../Components/LoadingBox';
-import MesssageBox from '../Components/MesssageBox';
 import { BiConversation } from 'react-icons/bi';
 import { FaTrash } from 'react-icons/fa';
 import { FiSettings } from 'react-icons/fi';
-import { sleep } from '../Utils/sleep';
+import { useHistory } from 'react-router-dom';
+import ChatInput from '../components/ChatInput';
+import LoadingBox from '../components/LoadingBox';
+import Message from '../components/Message';
+import MesssageBox from '../components/MesssageBox';
+import { db } from '../firebase';
+
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../firebase';
+import { sleep } from '../Utils/utils';
 
 const Chat: FC<any> = (props: any): JSX.Element => {
   const chatId = props.match.params.id;

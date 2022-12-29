@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import styled from 'styled-components';
-import DisplayText from '../Components/DisplayText';
+import DisplayText from '../components/DisplayText';
 
 const Home: FC<any> = (): JSX.Element => {
   return (

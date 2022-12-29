@@ -16,7 +16,7 @@ import { MdSave } from 'react-icons/md';
 import { WiMoonAltNew } from 'react-icons/wi';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import SideBarOption from '../Components/SideBarOption';
+import SideBarOption from '../components/SideBarOption';
 import { enterRoom } from '../features/appSlice';
 import { auth, db } from '../firebase';
 
@@ -30,8 +30,6 @@ const LeftMenu: FC<any> = (): JSX.Element => {
   const [channels] = useCollection(db.collection('rooms'));
   const [user] = useAuthState(auth);
   const dispatch = useDispatch();
-
-  const [channel, setChannel] = useState(true);
   const [options, setOptions] = useState(true);
   const history = useHistory();
 
@@ -125,24 +123,23 @@ const LeftMenu: FC<any> = (): JSX.Element => {
         ))}
 
       <hr />
-      {channel && (
-        <>
-          <SideBarOption
-            Icon={BiMessageAdd}
-            title='Add channel'
-            onClick={addChannel}
-          />
 
-          {channels?.docs.map((doc) => (
-            <SideBarOption
-              Icon={GiConversation}
-              key={doc.id}
-              title={doc.data().name}
-              onClick={() => selectChannel(doc.id)}
-            />
-          ))}
-        </>
-      )}
+      <>
+        <SideBarOption
+          Icon={BiMessageAdd}
+          title='Add channel'
+          onClick={addChannel}
+        />
+
+        {channels?.docs.map((doc) => (
+          <SideBarOption
+            Icon={GiConversation}
+            key={doc.id}
+            title={doc.data().name}
+            onClick={() => selectChannel(doc.id)}
+          />
+        ))}
+      </>
     </div>
   );
 };
