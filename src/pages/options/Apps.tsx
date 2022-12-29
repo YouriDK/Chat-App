@@ -1,8 +1,8 @@
 import { FC } from 'react';
 import { ClockLoader } from 'react-spinners';
 import styled from 'styled-components';
-import DisplayText from '../components/DisplayText';
-import { BIGCSS, inter } from '../Types/Spinners';
+import DisplayText from '../../components/DisplayText';
+import { BIGCSS, inter } from '../../Types/Spinners';
 
 const Apps: FC<any> = (): JSX.Element => {
   return (

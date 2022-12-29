@@ -32,7 +32,12 @@ Collections -> [docs] -> Collections ( message) -> [docs] chaque msg
 - Upgrade Search Barre
 
 # Todo
+```
+- Implémenter La barre Search
+- Imlépmenter responsive
 
+*/
+```
 # Issues
 
 

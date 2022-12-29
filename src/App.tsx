@@ -3,29 +3,18 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import LoadingBox from './components/LoadingBox';
 import { auth } from './firebase';
-import Apps from './pages/Apps';
-import Channel from './pages/Channel';
+import Apps from './pages/options/Apps';
+import Channel from './pages/options/Channel';
 import Chat from './pages/Chat';
-import Files from './pages/Files';
+import Files from './pages/options/Files';
 import Header from './pages/Header';
 import Home from './pages/Home';
 import LeftMenu from './pages/LeftMenu';
 import Login from './pages/Login';
-import Mention from './pages/Mention';
-import People from './pages/People';
-import Saved from './pages/Saved';
-import Threads from './pages/Threads';
-
-/*
-TODO Implémenter le Side Bar
-TODO Arranger la liste des message ( scroll , affichage des msg derriere le barre input)
-TODO Implémenter Show less
-TODO Implémenter la suppression de channels
-TODO Implémenter La barre Search
-TODO Mettre un bouton send sur la droite de la barre input
-TODO Mettre une forme Responsive
-TODO Arranger le display name dans le sideBar
-*/
+import Mention from './pages/options/Mention';
+import People from './pages/options/People';
+import Saved from './pages/options/Saved';
+import Threads from './pages/options/Threads';
 
 const App: FC<any> = (): JSX.Element => {
   const [user, loading] = useAuthState(auth);

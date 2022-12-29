@@ -1,8 +1,8 @@
 import { FC } from 'react';
 import { ClockLoader } from 'react-spinners';
 import styled from 'styled-components';
-import DisplayText from '../components/DisplayText';
-import { BIGCSS, primary } from '../Types/Spinners';
+import DisplayText from '../../components/DisplayText';
+import { BIGCSS, primary } from '../../Types/Spinners';
 
 const Mention: FC<any> = (): JSX.Element => {
   return (
