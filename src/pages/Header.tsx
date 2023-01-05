@@ -1,24 +1,30 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { AiFillClockCircle, AiOutlineSearch } from 'react-icons/ai';
 import { GoSignOut } from 'react-icons/go';
+import { BsToggleOff, BsToggleOn } from 'react-icons/bs';
+import { useDispatch, useSelector } from 'react-redux';
 import { auth } from '../firebase';
 import { sleep } from '../Utils/utils';
+import { setVisibleMenu } from '../Middleware/actions/chatActions';
 
 const Header: FC<any> = (): JSX.Element => {
   const [user] = useAuthState(auth);
+  const dispatch = useDispatch();
   const [search, setSearch] = useState('');
-
-  useEffect(() => {
-    console.log('USER', user);
-    console.log('Proho', user?.photoURL);
-  }, [user]);
-
+  const isMobile = useSelector((state: any) => state.isMobile.isMobile);
+  const showMenu = useSelector((state: any) => state.showMenu.showMenu);
   const handleFeatureComing = async () => {
     const temp = search;
     setSearch('Feature incoming.....');
     await sleep(2000);
     setSearch(temp);
+  };
+
+  const handleMenu = () => {
+    // console.log('handleMenu', showMenu);
+    // console.log('isMobile', isMobile);
+    dispatch(setVisibleMenu(!showMenu));
   };
   return (
     <header className='flex justify-between secondary'>
@@ -76,15 +82,43 @@ const Header: FC<any> = (): JSX.Element => {
         />
       </div>
 
-      <div className='header-right'>
-        <img
-          className='header-avatar'
-          // * Permet  de déconnecter en cliquant sur l'avatar
-          style={{ borderRadius: '55px', maxHeight: '60px' }}
-          alt={user?.displayName || ''}
-          src={user?.photoURL || ''}
-        />
-      </div>
+      {isMobile ? (
+        <div className='header-right'>
+          {showMenu ? (
+            <BsToggleOn
+              size={30}
+              style={{
+                color: 'var(--primary)',
+                cursor: 'pointer',
+                marginTop: 'auto',
+                marginBottom: 'auto',
+              }}
+              onClick={() => dispatch(setVisibleMenu(!showMenu))}
+            />
+          ) : (
+            <BsToggleOff
+              size={30}
+              style={{
+                color: 'var(--primary)',
+                cursor: 'pointer',
+                marginTop: 'auto',
+                marginBottom: 'auto',
+              }}
+              onClick={() => dispatch(setVisibleMenu(!showMenu))}
+            />
+          )}
+        </div>
+      ) : (
+        <div className='header-right'>
+          <img
+            className='header-avatar'
+            // * Permet  de déconnecter en cliquant sur l'avatar
+            style={{ borderRadius: '55px', maxHeight: '60px' }}
+            alt={user?.displayName || ''}
+            src={user?.photoURL || ''}
+          />
+        </div>
+      )}
     </header>
   );
 };

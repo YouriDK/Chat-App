@@ -14,7 +14,7 @@ import { CgBrowser } from 'react-icons/cg';
 import { GiConversation } from 'react-icons/gi';
 import { MdSave } from 'react-icons/md';
 import { WiMoonAltNew } from 'react-icons/wi';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import SideBarOption from '../components/SideBarOption';
 import { enterRoom } from '../features/appSlice';
@@ -30,6 +30,7 @@ const LeftMenu: FC<any> = (): JSX.Element => {
   const [channels] = useCollection(db.collection('rooms'));
   const [user] = useAuthState(auth);
   const dispatch = useDispatch();
+  const isMobile = useSelector((state: any) => state.isMobile.isMobile);
   const [options, setOptions] = useState(true);
   const history = useHistory();
 
@@ -104,8 +105,21 @@ const LeftMenu: FC<any> = (): JSX.Element => {
     >
       <div className='flex meanu-header' style={{ padding: '13px' }}>
         <div className='flex menu-info' style={{ flex: 1 }}>
-          <WiMoonAltNew color='green' size={20} />
-          <h3>{user?.displayName}</h3>
+          {isMobile ? (
+            <img
+              className='header-avatar'
+              // * Permet  de déconnecter en cliquant sur l'avatar
+              style={{ borderRadius: '55px', maxHeight: '30px' }}
+              alt={user?.displayName || ''}
+              src={user?.photoURL || ''}
+            />
+          ) : (
+            <>
+              {' '}
+              <WiMoonAltNew color='green' size={20} />{' '}
+              <h3>{user?.displayName}</h3>
+            </>
+          )}
         </div>
       </div>
       <SideBarOption

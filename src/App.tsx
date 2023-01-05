@@ -1,16 +1,18 @@
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import { useDispatch, useSelector } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import LoadingBox from './components/LoadingBox';
 import { auth } from './firebase';
-import Apps from './pages/options/Apps';
-import Channel from './pages/options/Channel';
+import { setMobileView } from './Middleware/actions/chatActions';
 import Chat from './pages/Chat';
-import Files from './pages/options/Files';
 import Header from './pages/Header';
 import Home from './pages/Home';
 import LeftMenu from './pages/LeftMenu';
 import Login from './pages/Login';
+import Apps from './pages/options/Apps';
+import Channel from './pages/options/Channel';
+import Files from './pages/options/Files';
 import Mention from './pages/options/Mention';
 import People from './pages/options/People';
 import Saved from './pages/options/Saved';
@@ -18,6 +20,13 @@ import Threads from './pages/options/Threads';
 
 const App: FC<any> = (): JSX.Element => {
   const [user, loading] = useAuthState(auth);
+  const [isMobile, setIsMobile] = useState<boolean>(false);
+  const showMenu = useSelector((state: any) => state.showMenu.showMenu);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 769);
+    dispatch(setMobileView(window.innerWidth < 769));
+  }, [dispatch, window.innerWidth]);
 
   return loading ? (
     <div
@@ -39,7 +48,7 @@ const App: FC<any> = (): JSX.Element => {
         <>
           <Header />
           <div className='flex h-full'>
-            <LeftMenu />
+            {showMenu && <LeftMenu />}
             <Switch>
               <Route path='/chat/:id' component={Chat} />
               <Route path='/threads' component={Threads} />

@@ -2,9 +2,11 @@ import {
   CHAT_DETAILS_REQUEST,
   CHAT_DETAILS_SUCCESS,
   CHAT_DETAILS_FAIL,
+  IS_MOBILE,
+  SHOW_MENU,
 } from '../constant/chatConstants';
 
-const getChatDetails = (roomId: string) => (dispatch: any) => {
+export const getChatDetails = (roomId: string) => (dispatch: any) => {
   try {
     dispatch({ type: CHAT_DETAILS_REQUEST });
     dispatch({ type: CHAT_DETAILS_SUCCESS, payload: 'data' });
@@ -14,4 +16,15 @@ const getChatDetails = (roomId: string) => (dispatch: any) => {
   }
 };
 
-export { getChatDetails };
+export const setMobileView = (mobile: boolean) => {
+  return {
+    type: IS_MOBILE,
+    payload: mobile,
+  };
+};
+export const setVisibleMenu = (show: boolean) => {
+  return {
+    type: SHOW_MENU,
+    payload: show,
+  };
+};

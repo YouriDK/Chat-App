@@ -60,7 +60,7 @@ const Chat: FC<any> = (props: any): JSX.Element => {
   ) : (
     <div
       className='flex flex-col bg-transparent p-[5px] h-full'
-      style={{ flex: '0.7', flexGrow: 1 }}
+      style={{ flex: '0.7', flexGrow: 1, width: '70%' }}
     >
       <div
         className='flex justify-between chat-header'
