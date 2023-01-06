@@ -20,7 +20,7 @@ import Threads from './pages/options/Threads';
 
 const App: FC<any> = (): JSX.Element => {
   const [user, loading] = useAuthState(auth);
-  const [isMobile, setIsMobile] = useState<boolean>(false);
+  const [, setIsMobile] = useState<boolean>(false);
   const showMenu = useSelector((state: any) => state.showMenu.showMenu);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -48,7 +48,7 @@ const App: FC<any> = (): JSX.Element => {
         <>
           <Header />
           <div className='flex h-full'>
-            {showMenu && <LeftMenu />}
+            {showMenu || (showMenu === undefined && <LeftMenu />)}
             <Switch>
               <Route path='/chat/:id' component={Chat} />
               <Route path='/threads' component={Threads} />
