@@ -26,7 +26,7 @@ const App: FC<any> = (): JSX.Element => {
   useEffect(() => {
     setIsMobile(window.innerWidth < 769);
     dispatch(setMobileView(window.innerWidth < 769));
-  }, [dispatch, window.innerWidth]);
+  }, [dispatch]);
 
   return loading ? (
     <div
@@ -48,7 +48,7 @@ const App: FC<any> = (): JSX.Element => {
         <>
           <Header />
           <div className='flex h-full'>
-            {showMenu || (showMenu === undefined && <LeftMenu />)}
+            {(showMenu || showMenu === undefined) && <LeftMenu />}
             <Switch>
               <Route path='/chat/:id' component={Chat} />
               <Route path='/threads' component={Threads} />

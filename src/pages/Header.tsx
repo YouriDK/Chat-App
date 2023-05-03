@@ -21,11 +21,6 @@ const Header: FC<any> = (): JSX.Element => {
     setSearch(temp);
   };
 
-  const handleMenu = () => {
-    // console.log('handleMenu', showMenu);
-    // console.log('isMobile', isMobile);
-    dispatch(setVisibleMenu(!showMenu));
-  };
   return (
     <header className='flex justify-between secondary'>
       <GoSignOut

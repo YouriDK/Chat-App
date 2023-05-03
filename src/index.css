@@ -14,7 +14,7 @@
 
 :root {
   --background: #003f88;
-  --ligth-bg: #00509d;
+  --ligth-bg: #00509d; /* Secondaire */
   --dark-bg: #00296b;
   --primary: #fdc500;
   --ligth-primary: #ffd500;
@@ -26,8 +26,8 @@
   --grey: #a19f9f;
 
   
-  --primary: #2b9348;
-  --secondary: #e6ccb2;
+  --primary: #2b938a; /* Primaire */
+  --secondary: #e6ccb2; /* Tertiaire */
   --title: #cbf3f0;
   --orange: #ffbf69;
   --white: #ffffff;
