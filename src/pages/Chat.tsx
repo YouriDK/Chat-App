@@ -122,31 +122,35 @@ const Chat: FC<any> = (): JSX.Element => {
 
       <div className='chat-messages flex flex-col h-full'>
         <br />
-        {messages.map((intels: MessageProps) => {
-          const { message, timestamp, user, userImage, uid } = intels.data;
-          return (
-            <div
-              className={`${
-                checkUuid(uid) ? 'flex justify-end' : 'flex justify-start'
-              } `}
-              style={{
-                marginLeft: '2%',
-                marginRight: '2%',
-                paddingBottom: '10px',
-                marginBottom: '10px',
-              }}
-            >
-              <Message
-                me={checkUuid(uid)}
-                key={intels.id}
-                message={message}
-                timestamp={timestamp}
-                user={user}
-                userImage={userImage}
-              />
-            </div>
-          );
-        })}
+        {messages
+          .sort((a: any, b: any) =>
+            a.data.timestamp > b.data.timestamp ? 1 : -1
+          )
+          .map((intels: MessageProps) => {
+            const { message, timestamp, user, userImage, uid } = intels.data;
+            return (
+              <div
+                className={`${
+                  checkUuid(uid) ? 'flex justify-end' : 'flex justify-start'
+                } `}
+                style={{
+                  marginLeft: '2%',
+                  marginRight: '2%',
+                  paddingBottom: '10px',
+                  marginBottom: '10px',
+                }}
+              >
+                <Message
+                  me={checkUuid(uid)}
+                  key={intels.id}
+                  message={message}
+                  timestamp={timestamp}
+                  user={user}
+                  userImage={userImage}
+                />
+              </div>
+            );
+          })}
         <div ref={chatRef} />
       </div>
       {alert && <MesssageBox variant='info' text='Feature incoming....' />}
