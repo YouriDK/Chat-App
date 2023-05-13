@@ -1,8 +1,8 @@
 import { FC } from 'react';
 import { ClockLoader } from 'react-spinners';
 import styled from 'styled-components';
+import { inter } from '../../Types/Spinners';
 import DisplayText from '../../components/DisplayText';
-import { BIGCSS, inter } from '../../Types/Spinners';
 
 const Apps: FC<any> = (): JSX.Element => {
   return (
@@ -12,7 +12,7 @@ const Apps: FC<any> = (): JSX.Element => {
       <br />
       <br />
       <br />
-      <ClockLoader color={inter} loading /*css={BIGCSS}*/ size={150} />
+      <ClockLoader color={inter} loading size={150} />
     </AppsContainer>
   );
 };

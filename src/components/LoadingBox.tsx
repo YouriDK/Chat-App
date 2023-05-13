@@ -1,6 +1,5 @@
 import { FC } from 'react';
 import { ClimbingBoxLoader, HashLoader } from 'react-spinners';
-import { CSS } from '../Types/Spinners';
 
 interface LoadingBoxProps {
   Icon?: boolean;
@@ -13,9 +12,9 @@ const LoadingBox: FC<LoadingBoxProps> = ({
   size,
 }): JSX.Element => {
   return Icon ? (
-    <HashLoader color={color} loading /*css={CSS}*/ size={size} />
+    <HashLoader color={color} loading size={size} />
   ) : (
-    <ClimbingBoxLoader color='#2ec4b6' loading /*css={CSS}*/ size={30} />
+    <ClimbingBoxLoader color='#2ec4b6' loading size={30} />
   );
 };
 export default LoadingBox;

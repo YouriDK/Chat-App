@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { ClockLoader } from 'react-spinners';
 import styled from 'styled-components';
 import DisplayText from '../../components/DisplayText';
-import { BIGCSS, primary } from '../../Types/Spinners';
+import { primary } from '../../Types/Spinners';
 
 const Threads: FC<any> = (): JSX.Element => {
   return (
@@ -11,7 +11,7 @@ const Threads: FC<any> = (): JSX.Element => {
       <br />
       <br />
       <br />
-      <ClockLoader color={primary} loading /*css={BIGCSS}*/ size={150} />
+      <ClockLoader color={primary} loading size={150} />
     </ThreadContainer>
   );
 };

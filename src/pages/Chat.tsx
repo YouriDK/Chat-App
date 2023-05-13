@@ -51,6 +51,7 @@ const Chat: FC<any> = (): JSX.Element => {
   };
   useEffect(() => {
     getChannelName();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chatId]);
 
   const checkUuid = (uid: string): boolean => {
