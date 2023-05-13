@@ -44,18 +44,21 @@ const App: FC<any> = (): JSX.Element => {
           <>
             <Header />
             <div className='flex h-full'>
-              {chatAppContext.showMenu && <LeftMenu />}
-              <Routes>
-                <Route path='/chat/:ChatId' Component={Chat} />
-                <Route path='/threads' Component={Threads} />
-                <Route path='/mentions' Component={Mention} />
-                <Route path='/saved' Component={Saved} />
-                <Route path='/channel' Component={Channel} />
-                <Route path='/people' Component={People} />
-                <Route path='/apps' Component={Apps} />
-                <Route path='/files' Component={Files} />
-                <Route path='/' Component={Home} />
-              </Routes>
+              {chatAppContext.showMenu ? (
+                <LeftMenu />
+              ) : (
+                <Routes>
+                  <Route path='/chat/:ChatId' Component={Chat} />
+                  <Route path='/threads' Component={Threads} />
+                  <Route path='/mentions' Component={Mention} />
+                  <Route path='/saved' Component={Saved} />
+                  <Route path='/channel' Component={Channel} />
+                  <Route path='/people' Component={People} />
+                  <Route path='/apps' Component={Apps} />
+                  <Route path='/files' Component={Files} />
+                  <Route path='/' Component={Home} />
+                </Routes>
+              )}
             </div>
           </>
         )}

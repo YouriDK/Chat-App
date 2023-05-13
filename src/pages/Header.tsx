@@ -59,7 +59,12 @@ const Header: FC<any> = (): JSX.Element => {
         <input
           className='bg-transparent text-center outline-0'
           placeholder='...'
-          style={{ border: 'none', color: 'white', minWidth: '30px' }}
+          style={{
+            border: 'none',
+            color: 'white',
+            minWidth: '30px',
+            maxWidth: `${chatAppContext.isMobile ? '100px' : 'auto'}`,
+          }}
           name='search'
           id='search'
           value={search}

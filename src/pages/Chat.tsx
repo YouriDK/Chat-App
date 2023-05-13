@@ -169,7 +169,8 @@ const ChatBox = styled.div`
   flex-direction: column;
   flex: 0.7;
   flex-grow: 1;
-  witdh: 70%;
+  width: 70%;
+  max-width: 100%;
   background-color: transparent;
   padding: 5px;
   height: 100%;

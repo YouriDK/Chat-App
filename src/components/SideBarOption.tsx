@@ -24,7 +24,7 @@ const SideBarOption: FC<SideBarOptionProps> = ({
             size={chatAppContext.isMobile ? 40 : 35}
             style={{ padding: 10 }}
           />
-          {!chatAppContext.isMobile && <h3> {title} </h3>}
+          <h3> {title} </h3>
         </>
       ) : (
         <>
@@ -32,7 +32,7 @@ const SideBarOption: FC<SideBarOptionProps> = ({
             size={chatAppContext.isMobile ? 40 : 35}
             style={{ padding: 10 }}
           />
-          {!chatAppContext.isMobile && <h3> {title} </h3>}
+          <h3> {title} </h3>
         </>
       )}
     </SideBarOptionConatiner>
@@ -45,7 +45,6 @@ const SideBarOptionConatiner = styled.div`
   padding-left: 2px;
   cursor: pointer;
   margin-top: 10px;
-
   :hover {
     opacity: 0.8;
     background-color: var(--dark-background);

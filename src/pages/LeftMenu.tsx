@@ -32,7 +32,8 @@ const LeftMenu: FC<any> = (): JSX.Element => {
   const [channels, setChannels] = useState<ChannelProps[]>([]);
   const [user] = useAuthState(auth);
   const [options, setOptions] = useState(false);
-  const { chatAppContext } = useContext(ChatAppContext);
+  const { chatAppContext, setChatAppContext } = useContext(ChatAppContext);
+
   const letsGoTo = useNavigate();
   const getChannelName = async () => {
     const rooms = collection(db, 'rooms');
@@ -48,6 +49,7 @@ const LeftMenu: FC<any> = (): JSX.Element => {
 
   useEffect(() => {
     getChannelName();
+    console.log('❤ ~ chatAppContext->', chatAppContext);
   }, []);
 
   const addChannel = async () => {
@@ -100,8 +102,9 @@ const LeftMenu: FC<any> = (): JSX.Element => {
     },
   ];
 
-  const selectChannel = (id: string) => {
-    letsGoTo(`/chat/${id}`);
+  const handleLetsGoTo = (direction: string) => {
+    setChatAppContext({ ...chatAppContext, showMenu: false });
+    letsGoTo(direction);
   };
   return (
     <div
@@ -109,7 +112,8 @@ const LeftMenu: FC<any> = (): JSX.Element => {
       style={{
         color: 'black',
         minWidth: '15%',
-        maxWidth: '260px',
+        width: `${chatAppContext.isMobile ? '100%' : '260px'}`,
+        maxWidth: `${chatAppContext.isMobile ? '100%' : '260px'}`,
         marginTop: '60px',
         borderRadius: '20px',
         margin: '15px',
@@ -145,7 +149,7 @@ const LeftMenu: FC<any> = (): JSX.Element => {
           <SideBarOption
             key={index}
             Icon={sidebar.Icon}
-            onClick={() => letsGoTo(sidebar.push)}
+            onClick={() => handleLetsGoTo(sidebar.push)}
             title={sidebar.title}
           />
         ))}
@@ -166,7 +170,7 @@ const LeftMenu: FC<any> = (): JSX.Element => {
               Icon={GiConversation}
               key={channel.id}
               title={channel.data.name}
-              onClick={() => selectChannel(channel.id)}
+              onClick={() => handleLetsGoTo(`/chat/${channel.id}`)}
             />
           ))}
       </>
