@@ -19,10 +19,6 @@ const Header: FC<any> = (): JSX.Element => {
     setSearch(temp);
   };
 
-  useEffect(() => {
-    console.log('❤ ~ chatAppContext->', chatAppContext);
-  }, [chatAppContext]);
-
   return (
     <header className='flex justify-between secondary'>
       <GoSignOut

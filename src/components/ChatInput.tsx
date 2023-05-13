@@ -1,7 +1,7 @@
 import { Button } from '@material-ui/core';
 import { FC, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { MdSend } from 'react-icons/md';
+import { RiSendPlane2Fill } from 'react-icons/ri';
 import { auth, db } from '../firebase';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 const ChatInput: FC<any> = ({
@@ -37,7 +37,6 @@ const ChatInput: FC<any> = ({
 
   return (
     <div className='chat-input'>
-      {/* <Picker onEmojiClick={onEmojiClick} /> */}
       <form>
         <textarea
           onChange={(e) => setInput(e.target.value)}
@@ -46,11 +45,11 @@ const ChatInput: FC<any> = ({
         />
 
         <Button type='submit' onClick={sendMessage}>
-          <MdSend
+          <RiSendPlane2Fill
             size={35}
             style={{
-              padding: 2,
-              marginRight: '15px',
+              padding: '1px',
+              marginRight: '5px',
               color: 'var(--ligth-bg)',
             }}
           />

@@ -49,7 +49,6 @@ const LeftMenu: FC<any> = (): JSX.Element => {
 
   useEffect(() => {
     getChannelName();
-    console.log('❤ ~ chatAppContext->', chatAppContext);
   }, []);
 
   const addChannel = async () => {
@@ -103,7 +102,9 @@ const LeftMenu: FC<any> = (): JSX.Element => {
   ];
 
   const handleLetsGoTo = (direction: string) => {
-    setChatAppContext({ ...chatAppContext, showMenu: false });
+    if (chatAppContext.isMobile) {
+      setChatAppContext({ ...chatAppContext, showMenu: false });
+    }
     letsGoTo(direction);
   };
   return (
@@ -112,17 +113,22 @@ const LeftMenu: FC<any> = (): JSX.Element => {
       style={{
         color: 'black',
         minWidth: '15%',
+        maxHeight: '100%',
         width: `${chatAppContext.isMobile ? '100%' : '260px'}`,
         maxWidth: `${chatAppContext.isMobile ? '100%' : '260px'}`,
         marginTop: '60px',
         borderRadius: '20px',
+        msOverflowStyle: 'none',
+        scrollbarWidth: 'none',
+        overflowY: 'scroll',
         margin: '15px',
         boxShadow: 'rgba(0, 0, 0, 0.16) 0px 1px 4px',
       }}
     >
       <div className='flex meanu-header' style={{ padding: '13px' }}>
         <div className='flex menu-info' style={{ flex: 1 }}>
-          {chatAppContext.isMobile ? (
+          <>
+            {' '}
             <img
               className='header-avatar'
               // * Permet  de déconnecter en cliquant sur l'avatar
@@ -130,13 +136,8 @@ const LeftMenu: FC<any> = (): JSX.Element => {
               alt={user?.displayName || ''}
               src={user?.photoURL || ''}
             />
-          ) : (
-            <>
-              {' '}
-              <WiMoonAltNew color='green' size={20} />{' '}
-              <h3>{user?.displayName}</h3>
-            </>
-          )}
+            <h3>{user?.displayName}</h3>
+          </>
         </div>
       </div>
       <SideBarOption

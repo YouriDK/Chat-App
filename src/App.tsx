@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import LoadingBox from './components/LoadingBox';
@@ -22,6 +22,13 @@ const App: FC<any> = (): JSX.Element => {
     isMobile: window.innerWidth < 769,
     showMenu: true,
   });
+  const handleResize = () => {
+    setChatAppContext({ ...chatAppContext, isMobile: window.innerWidth < 769 });
+  };
+
+  useEffect(() => {
+    window.addEventListener('resize', handleResize);
+  }, []);
 
   return loading ? (
     <div
@@ -44,9 +51,11 @@ const App: FC<any> = (): JSX.Element => {
           <>
             <Header />
             <div className='flex h-full'>
-              {chatAppContext.showMenu ? (
+              {(!chatAppContext.isMobile || chatAppContext.showMenu) && (
                 <LeftMenu />
-              ) : (
+              )}
+
+              {(!chatAppContext.isMobile || !chatAppContext.showMenu) && (
                 <Routes>
                   <Route path='/chat/:ChatId' Component={Chat} />
                   <Route path='/threads' Component={Threads} />
