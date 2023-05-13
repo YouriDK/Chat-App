@@ -20,7 +20,7 @@ const App: FC<any> = (): JSX.Element => {
   const [user, loading] = useAuthState(auth);
   const [chatAppContext, setChatAppContext] = useState<any>({
     isMobile: window.innerWidth < 769,
-    showMenu: true,
+    showMenu: false,
   });
   const handleResize = () => {
     setChatAppContext({ ...chatAppContext, isMobile: window.innerWidth < 769 });

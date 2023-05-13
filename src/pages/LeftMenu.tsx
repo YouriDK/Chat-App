@@ -13,7 +13,6 @@ import { BsFillPeopleFill } from 'react-icons/bs';
 import { CgBrowser } from 'react-icons/cg';
 import { GiConversation } from 'react-icons/gi';
 import { MdSave } from 'react-icons/md';
-import { WiMoonAltNew } from 'react-icons/wi';
 import { useNavigate } from 'react-router-dom';
 import SideBarOption from '../components/SideBarOption';
 import { ChatAppContext, auth, db } from '../firebase';
