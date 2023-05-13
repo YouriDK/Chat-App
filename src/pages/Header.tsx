@@ -1,25 +1,27 @@
-import { FC, useState } from 'react';
+import { FC, useContext, useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { AiFillClockCircle, AiOutlineSearch } from 'react-icons/ai';
-import { GoSignOut } from 'react-icons/go';
 import { BsToggleOff, BsToggleOn } from 'react-icons/bs';
-import { useDispatch, useSelector } from 'react-redux';
-import { auth } from '../firebase';
+import { GoSignOut } from 'react-icons/go';
 import { sleep } from '../Utils/utils';
-import { setVisibleMenu } from '../Middleware/actions/chatActions';
+import { ChatAppContext, auth } from '../firebase';
 
 const Header: FC<any> = (): JSX.Element => {
   const [user] = useAuthState(auth);
-  const dispatch = useDispatch();
+  const { chatAppContext, setChatAppContext } = useContext(ChatAppContext);
+
   const [search, setSearch] = useState('');
-  const isMobile = useSelector((state: any) => state.isMobile.isMobile);
-  const showMenu = useSelector((state: any) => state.showMenu.showMenu);
+
   const handleFeatureComing = async () => {
     const temp = search;
     setSearch('Feature incoming.....');
     await sleep(2000);
     setSearch(temp);
   };
+
+  useEffect(() => {
+    console.log('❤ ~ chatAppContext->', chatAppContext);
+  }, [chatAppContext]);
 
   return (
     <header className='flex justify-between secondary'>
@@ -56,7 +58,7 @@ const Header: FC<any> = (): JSX.Element => {
 
         <input
           className='bg-transparent text-center outline-0'
-          placeholder='Search...'
+          placeholder='...'
           style={{ border: 'none', color: 'white', minWidth: '30px' }}
           name='search'
           id='search'
@@ -77,9 +79,9 @@ const Header: FC<any> = (): JSX.Element => {
         />
       </div>
 
-      {isMobile ? (
+      {chatAppContext.isMobile ? (
         <div className='header-right'>
-          {showMenu ? (
+          {chatAppContext.showMenu ? (
             <BsToggleOn
               size={30}
               style={{
@@ -88,7 +90,12 @@ const Header: FC<any> = (): JSX.Element => {
                 marginTop: 'auto',
                 marginBottom: 'auto',
               }}
-              onClick={() => dispatch(setVisibleMenu(!showMenu))}
+              onClick={() =>
+                setChatAppContext({
+                  showMenu: !chatAppContext.showMenu,
+                  isMobile: chatAppContext.isMobile,
+                })
+              }
             />
           ) : (
             <BsToggleOff
@@ -99,7 +106,12 @@ const Header: FC<any> = (): JSX.Element => {
                 marginTop: 'auto',
                 marginBottom: 'auto',
               }}
-              onClick={() => dispatch(setVisibleMenu(!showMenu))}
+              onClick={() =>
+                setChatAppContext({
+                  showMenu: !chatAppContext.showMenu,
+                  isMobile: chatAppContext.isMobile,
+                })
+              }
             />
           )}
         </div>

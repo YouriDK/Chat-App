@@ -1,10 +1,9 @@
 import { Button } from '@material-ui/core';
-import firebase from 'firebase';
 import { FC, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { MdSend } from 'react-icons/md';
 import { auth, db } from '../firebase';
-// import Picker from 'emoji-picker-react';
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 const ChatInput: FC<any> = ({
   channelName,
   channelId,
@@ -12,23 +11,17 @@ const ChatInput: FC<any> = ({
 }): JSX.Element => {
   const [input, setInput] = useState('');
   const [user] = useAuthState(auth); // *  Récupération des données de l'user lors du login
-  // const [chosenEmoji] = useState(null);
-  // const onEmojiClick = (event: any, emojiObject: any) => {
-  //   setInput(input + emojiObject);
-  // };
 
-  const sendMessage = (e: any) => {
-    console.log('user', user);
+  const sendMessage = async (e: any) => {
     // TODO console.log('user', user?.uid); Rajouter l'uid dans les intels
     e.preventDefault(); // * Permet de ne pas rafraichir la page
     if (input !== '') {
       if (!channelId) {
         return false;
       }
-
-      db.collection('rooms').doc(channelId).collection('messages').add({
+      await addDoc(collection(db, `rooms/${channelId}/messages`), {
         message: input,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        timestamp: serverTimestamp(),
         user: user?.displayName,
         userImage: user?.photoURL,
         uid: user?.uid,
@@ -49,7 +42,7 @@ const ChatInput: FC<any> = ({
         <textarea
           onChange={(e) => setInput(e.target.value)}
           value={input}
-          placeholder={`Message sur ${channelName} ...`}
+          placeholder={`Message on ${channelName} ...`}
         />
 
         <Button type='submit' onClick={sendMessage}>

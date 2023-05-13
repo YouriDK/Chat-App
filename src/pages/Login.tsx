@@ -1,12 +1,13 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
 import { auth, provider } from '../firebase';
+import { signInWithPopup } from 'firebase/auth';
 import { Button } from '@material-ui/core';
 
 const Login: FC<any> = (): JSX.Element => {
   const SignIn = (e: any) => {
     e.preventDefault();
-    auth.signInWithPopup(provider).catch((error) => {
+    signInWithPopup(auth, provider).catch((error) => {
       alert(error.message);
     });
   };

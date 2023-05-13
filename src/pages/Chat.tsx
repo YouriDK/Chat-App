@@ -1,41 +1,57 @@
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  onSnapshot,
+} from 'firebase/firestore';
 import { FC, useEffect, useRef, useState } from 'react';
-import { useCollection, useDocument } from 'react-firebase-hooks/firestore';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import { BiConversation } from 'react-icons/bi';
 import { FaTrash } from 'react-icons/fa';
 import { FiSettings } from 'react-icons/fi';
-import { useHistory } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { sleep } from '../Utils/utils';
 import ChatInput from '../components/ChatInput';
 import LoadingBox from '../components/LoadingBox';
 import Message from '../components/Message';
 import MesssageBox from '../components/MesssageBox';
-import { db } from '../firebase';
+import { auth, db } from '../firebase';
+import styled from 'styled-components';
 
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth } from '../firebase';
-import { sleep } from '../Utils/utils';
-
-const Chat: FC<any> = (props: any): JSX.Element => {
-  const chatId = props.match.params.id;
+interface MessageProps {
+  id: string;
+  data: any;
+}
+const Chat: FC<any> = (): JSX.Element => {
+  const params = useParams();
+  const chatId = params.ChatId;
   const chatRef = useRef<HTMLHeadingElement>(null);
   const [alert, setAlert] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [convoName, setConvoName] = useState('');
   const [user] = useAuthState(auth);
-  const history = useHistory();
-  const [details] = useDocument(chatId && db.collection('rooms').doc(chatId));
-  const [messages, loading] = useCollection(
-    chatId &&
-      db
-        .collection('rooms') // * Collections Rooms
-        .doc(chatId) // * Sélection de la room en fonction de son ID
-        .collection('messages') // * Récupérer tous les messages
-        .orderBy('timestamp', 'asc') // * Et les affichent par ordre Chronologique
-  );
+  const letsGoTo = useNavigate();
+  const details: any = {};
+  const [messages, setMessages] = useState<MessageProps[]>([]);
+  const getChannelName = async () => {
+    const roomNameRef = doc(db, 'rooms', chatId as string);
+    const messagesQuery = collection(db, `rooms/${chatId}/messages`);
+    const roomName = await getDoc(roomNameRef);
+    setConvoName(roomName.data()?.name);
+    onSnapshot(messagesQuery, async (snapshot: any) => {
+      const MessagesDataArray: MessageProps[] = [];
+      snapshot.docs.forEach((datas: any) => {
+        MessagesDataArray.push({ id: datas.id, data: datas.data() });
+      });
+      setMessages(MessagesDataArray);
+    });
+
+    setLoading(false);
+  };
   useEffect(() => {
-    if (chatRef?.current !== null) {
-      chatRef?.current.scrollIntoView();
-    }
-    setConvoName(details?.data()?.name);
-  }, [details, messages?.docs]);
+    getChannelName();
+  }, [chatId]);
 
   const checkUuid = (uid: string): boolean => {
     return uid === user?.uid;
@@ -46,29 +62,24 @@ const Chat: FC<any> = (props: any): JSX.Element => {
     setAlert(false);
   };
 
-  const deleteChat = () => {
-    db.collection('rooms') // * Collections Rooms
-      .doc(chatId) // * Sélection de la room en fonction de son ID
-      .delete()
-      .then(() => history.push('/'))
-      .catch((err: any) => console.log('ERREUR DE SUPPRESION !'));
+  const deleteChat = async () => {
+    const docToRemove = doc(db, 'rooms', chatId as string);
+    await deleteDoc(docToRemove);
+    letsGoTo('/');
   };
   return loading ? (
     <LoadingBox Icon />
   ) : !details && !messages ? (
     <MesssageBox variant='danger' text='Intels missing !' />
   ) : (
-    <div
-      className='flex flex-col bg-transparent p-[5px] h-full'
-      style={{ flex: '0.7', flexGrow: 1, width: '70%' }}
-    >
+    <ChatBox>
       <div
         className='flex justify-between chat-header'
         style={{
-          padding: '5px',
+          padding: '10px',
           borderRadius: '8px',
-          width: '80%',
-          margin: 'auto',
+          maxWidth: '100%',
+          margin: '20px',
         }}
       >
         <div className='flex items-center'>
@@ -110,18 +121,23 @@ const Chat: FC<any> = (props: any): JSX.Element => {
 
       <div className='chat-messages flex flex-col h-full'>
         <br />
-        {messages?.docs.map((doc: any) => {
-          const { message, timestamp, user, userImage, uid } = doc.data();
+        {messages.map((intels: MessageProps) => {
+          const { message, timestamp, user, userImage, uid } = intels.data;
           return (
             <div
               className={`${
                 checkUuid(uid) ? 'flex justify-end' : 'flex justify-start'
               } `}
-              style={{ maxWidth: '99%' }}
+              style={{
+                marginLeft: '2%',
+                marginRight: '2%',
+                paddingBottom: '10px',
+                marginBottom: '10px',
+              }}
             >
               <Message
                 me={checkUuid(uid)}
-                key={doc.id}
+                key={intels.id}
                 message={message}
                 timestamp={timestamp}
                 user={user}
@@ -136,10 +152,21 @@ const Chat: FC<any> = (props: any): JSX.Element => {
       <ChatInput
         // * Barre pour écrire un message
         chatRef={chatRef}
-        channelName={details?.data()?.name}
+        channelName={convoName}
         channelId={chatId}
       />
-    </div>
+    </ChatBox>
   );
 };
+
+const ChatBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 0.7;
+  flex-grow: 1;
+  witdh: 70%;
+  background-color: transparent;
+  padding: 5px;
+  height: 100%;
+`;
 export default Chat;

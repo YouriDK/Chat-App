@@ -12,7 +12,7 @@ const People: FC<any> = (): JSX.Element => {
       <br />
       <br />
       <br />
-      <ClockLoader color={primary} loading css={BIGCSS} size={150} />
+      <ClockLoader color={primary} loading /*css={BIGCSS}*/ size={150} />
     </PeopleContainer>
   );
 };

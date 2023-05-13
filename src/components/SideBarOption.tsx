@@ -1,7 +1,8 @@
-import React, { FC, MouseEventHandler } from 'react';
+import React, { FC, MouseEventHandler, useContext } from 'react';
 import styled from 'styled-components';
 import { GrStatusUnknown } from 'react-icons/gr';
-import { useSelector } from 'react-redux';
+
+import { ChatAppContext } from '../firebase';
 
 interface SideBarOptionProps {
   Icon: any;
@@ -14,18 +15,24 @@ const SideBarOption: FC<SideBarOptionProps> = ({
   title,
   onClick,
 }): JSX.Element => {
-  const isMobile = useSelector((state: any) => state.isMobile.isMobile);
+  const { chatAppContext } = useContext(ChatAppContext);
   return (
     <SideBarOptionConatiner onClick={onClick}>
       {Icon ? (
         <>
-          <Icon size={isMobile ? 40 : 35} style={{ padding: 10 }} />
-          {!isMobile && <h3> {title} </h3>}
+          <Icon
+            size={chatAppContext.isMobile ? 40 : 35}
+            style={{ padding: 10 }}
+          />
+          {!chatAppContext.isMobile && <h3> {title} </h3>}
         </>
       ) : (
         <>
-          <GrStatusUnknown size={isMobile ? 40 : 35} style={{ padding: 10 }} />
-          {!isMobile && <h3> {title} </h3>}
+          <GrStatusUnknown
+            size={chatAppContext.isMobile ? 40 : 35}
+            style={{ padding: 10 }}
+          />
+          {!chatAppContext.isMobile && <h3> {title} </h3>}
         </>
       )}
     </SideBarOptionConatiner>

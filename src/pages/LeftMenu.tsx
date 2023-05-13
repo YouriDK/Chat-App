@@ -1,6 +1,6 @@
-import { FC, useState } from 'react';
+import { addDoc, collection, onSnapshot } from 'firebase/firestore';
+import { FC, useContext, useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { useCollection } from 'react-firebase-hooks/firestore';
 import {
   AiFillAppstore,
   AiFillFileText,
@@ -14,33 +14,53 @@ import { CgBrowser } from 'react-icons/cg';
 import { GiConversation } from 'react-icons/gi';
 import { MdSave } from 'react-icons/md';
 import { WiMoonAltNew } from 'react-icons/wi';
-import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import SideBarOption from '../components/SideBarOption';
-import { enterRoom } from '../features/appSlice';
-import { auth, db } from '../firebase';
+import { ChatAppContext, auth, db } from '../firebase';
 
 interface sideBarOptionsProps {
   Icon: any;
   title: string;
   push: string;
 }
+interface ChannelProps {
+  id: string;
+  data: any;
+}
 
 const LeftMenu: FC<any> = (): JSX.Element => {
-  const [channels] = useCollection(db.collection('rooms'));
+  const [channels, setChannels] = useState<ChannelProps[]>([]);
   const [user] = useAuthState(auth);
-  const dispatch = useDispatch();
-  const isMobile = useSelector((state: any) => state.isMobile.isMobile);
-  const [options, setOptions] = useState(true);
-  const history = useHistory();
+  const [options, setOptions] = useState(false);
+  const { chatAppContext } = useContext(ChatAppContext);
+  const letsGoTo = useNavigate();
+  const getChannelName = async () => {
+    const rooms = collection(db, 'rooms');
 
-  const addChannel = () => {
+    onSnapshot(rooms, async (snapshot: any) => {
+      const ChannelArray: ChannelProps[] = [];
+      snapshot.docs.forEach((datas: any) => {
+        ChannelArray.push({ id: datas.id, data: datas.data() });
+      });
+      setChannels(ChannelArray);
+    });
+  };
+
+  useEffect(() => {
+    getChannelName();
+  }, []);
+
+  const addChannel = async () => {
     const channelName = prompt('Please enter the channel name :');
     if (channelName) {
-      db.collection('rooms').add({
+      const newChannel = await addDoc(collection(db, 'rooms'), {
         name: channelName,
       });
+
+      letsGoTo(`/chat/${newChannel.id}`);
     }
+
+    getChannelName();
   };
   const sideBarOptions: sideBarOptionsProps[] = [
     {
@@ -81,14 +101,7 @@ const LeftMenu: FC<any> = (): JSX.Element => {
   ];
 
   const selectChannel = (id: string) => {
-    history.push(`/chat/${id}`);
-    if (id) {
-      dispatch(
-        enterRoom({
-          roomId: id,
-        })
-      );
-    }
+    letsGoTo(`/chat/${id}`);
   };
   return (
     <div
@@ -100,12 +113,12 @@ const LeftMenu: FC<any> = (): JSX.Element => {
         marginTop: '60px',
         borderRadius: '20px',
         margin: '15px',
-        boxShadow: 'rgba(0, 0, 0, 0.16) 0px 1px 4px;',
+        boxShadow: 'rgba(0, 0, 0, 0.16) 0px 1px 4px',
       }}
     >
       <div className='flex meanu-header' style={{ padding: '13px' }}>
         <div className='flex menu-info' style={{ flex: 1 }}>
-          {isMobile ? (
+          {chatAppContext.isMobile ? (
             <img
               className='header-avatar'
               // * Permet  de déconnecter en cliquant sur l'avatar
@@ -128,10 +141,11 @@ const LeftMenu: FC<any> = (): JSX.Element => {
         onClick={() => setOptions(!options)}
       />
       {options &&
-        sideBarOptions.map((sidebar: sideBarOptionsProps) => (
+        sideBarOptions.map((sidebar: sideBarOptionsProps, index: number) => (
           <SideBarOption
+            key={index}
             Icon={sidebar.Icon}
-            onClick={() => history.push(sidebar.push)}
+            onClick={() => letsGoTo(sidebar.push)}
             title={sidebar.title}
           />
         ))}
@@ -142,17 +156,19 @@ const LeftMenu: FC<any> = (): JSX.Element => {
         <SideBarOption
           Icon={BiMessageAdd}
           title='Add channel'
-          onClick={addChannel}
+          onClick={async () => await addChannel()}
         />
 
-        {channels?.docs.map((doc) => (
-          <SideBarOption
-            Icon={GiConversation}
-            key={doc.id}
-            title={doc.data().name}
-            onClick={() => selectChannel(doc.id)}
-          />
-        ))}
+        {channels
+          .sort((a: any, b: any) => (a.data.name > b.data.name ? 1 : -1))
+          .map((channel: ChannelProps) => (
+            <SideBarOption
+              Icon={GiConversation}
+              key={channel.id}
+              title={channel.data.name}
+              onClick={() => selectChannel(channel.id)}
+            />
+          ))}
       </>
     </div>
   );

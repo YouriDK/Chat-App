@@ -1,4 +1,7 @@
-import firebase from 'firebase';
+import { getAuth, GoogleAuthProvider } from 'firebase/auth';
+import { createContext } from 'react';
+import firebase from 'firebase/compat/app';
+import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCOd91ktvn_VTVWmiejenEhgAMqcOcZLDw',
@@ -8,10 +11,8 @@ const firebaseConfig = {
   messagingSenderId: '197177570653',
   appId: '1:197177570653:web:d80a594fccba97007ee4b4',
 };
-const firebaseApp = firebase.initializeApp(firebaseConfig);
-
-const db = firebaseApp.firestore();
-const auth = firebase.auth();
-const provider = new firebase.auth.GoogleAuthProvider();
-
-export { auth, provider, db };
+export const firebaseApp = firebase.initializeApp(firebaseConfig);
+export const db = getFirestore(firebaseApp);
+export const auth = getAuth();
+export const provider = new GoogleAuthProvider();
+export const ChatAppContext = createContext<any>({});

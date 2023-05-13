@@ -1,10 +1,8 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { useDispatch, useSelector } from 'react-redux';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import LoadingBox from './components/LoadingBox';
-import { auth } from './firebase';
-import { setMobileView } from './Middleware/actions/chatActions';
+import { ChatAppContext, auth } from './firebase';
 import Chat from './pages/Chat';
 import Header from './pages/Header';
 import Home from './pages/Home';
@@ -20,13 +18,10 @@ import Threads from './pages/options/Threads';
 
 const App: FC<any> = (): JSX.Element => {
   const [user, loading] = useAuthState(auth);
-  const [, setIsMobile] = useState<boolean>(false);
-  const showMenu = useSelector((state: any) => state.showMenu.showMenu);
-  const dispatch = useDispatch();
-  useEffect(() => {
-    setIsMobile(window.innerWidth < 769);
-    dispatch(setMobileView(window.innerWidth < 769));
-  }, [dispatch]);
+  const [chatAppContext, setChatAppContext] = useState<any>({
+    isMobile: window.innerWidth < 769,
+    showMenu: true,
+  });
 
   return loading ? (
     <div
@@ -41,29 +36,31 @@ const App: FC<any> = (): JSX.Element => {
       </div>
     </div>
   ) : (
-    <Router>
-      {!user ? (
-        <Login />
-      ) : (
-        <>
-          <Header />
-          <div className='flex h-full'>
-            {(showMenu || showMenu === undefined) && <LeftMenu />}
-            <Switch>
-              <Route path='/chat/:id' component={Chat} />
-              <Route path='/threads' component={Threads} />
-              <Route path='/mentions' component={Mention} />
-              <Route path='/saved' component={Saved} />
-              <Route path='/channel' component={Channel} />
-              <Route path='/people' component={People} />
-              <Route path='/apps' component={Apps} />
-              <Route path='/files' component={Files} />
-              <Route path='/' exact component={Home} />
-            </Switch>
-          </div>
-        </>
-      )}
-    </Router>
+    <ChatAppContext.Provider value={{ chatAppContext, setChatAppContext }}>
+      <Router>
+        {!user ? (
+          <Login />
+        ) : (
+          <>
+            <Header />
+            <div className='flex h-full'>
+              {chatAppContext.showMenu && <LeftMenu />}
+              <Routes>
+                <Route path='/chat/:ChatId' Component={Chat} />
+                <Route path='/threads' Component={Threads} />
+                <Route path='/mentions' Component={Mention} />
+                <Route path='/saved' Component={Saved} />
+                <Route path='/channel' Component={Channel} />
+                <Route path='/people' Component={People} />
+                <Route path='/apps' Component={Apps} />
+                <Route path='/files' Component={Files} />
+                <Route path='/' Component={Home} />
+              </Routes>
+            </div>
+          </>
+        )}
+      </Router>
+    </ChatAppContext.Provider>
   );
 };
 

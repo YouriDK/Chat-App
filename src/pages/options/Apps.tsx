@@ -12,7 +12,7 @@ const Apps: FC<any> = (): JSX.Element => {
       <br />
       <br />
       <br />
-      <ClockLoader color={inter} loading css={BIGCSS} size={150} />
+      <ClockLoader color={inter} loading /*css={BIGCSS}*/ size={150} />
     </AppsContainer>
   );
 };

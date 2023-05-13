@@ -31,7 +31,7 @@ const CustomModal: FC<CustomModalProps> = ({
 }): JSX.Element => {
   return display ? (
     <Modal
-      fullscreen={fullscreen}
+      // fullscreen={fullscreen}
       size='sm'
       isOpen={isOpen}
       toggle={() => handleOpen(!isOpen)}
@@ -46,7 +46,7 @@ const CustomModal: FC<CustomModalProps> = ({
     </Modal>
   ) : (
     <Modal
-      fullscreen={fullscreen}
+      // fullscreen={fullscreen}
       size='sm'
       isOpen={isOpen}
       toggle={() => handleOpen(!isOpen)}
