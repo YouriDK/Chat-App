@@ -1,5 +1,7 @@
 # ChatApp website
 
+> npm run build avant chaque deploy
+
 ### Stack
 
 ```
@@ -23,6 +25,9 @@
 
 # Issues
 
-# Done
+# TODO
 
-# En cours
+> Update Manifest.json ( Application Mobile)
+> Looking for design components
+> Think of design and next features
+> Think about a release notes
